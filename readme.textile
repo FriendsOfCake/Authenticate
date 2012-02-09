@@ -39,7 +39,7 @@ Setup the authentication class settings
 
 Example for MultiColumnAuthenticate:
 <pre><code>
-    //in $componentents
+    //in $components
     public $components = array(
         'Auth' => array(
             authenticate = array(
