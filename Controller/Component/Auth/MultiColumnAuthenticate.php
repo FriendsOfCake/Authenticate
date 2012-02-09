@@ -7,7 +7,7 @@ App::uses('FormAuthenticate', 'Controller/Component/Auth');
  *
  * {{{
  *	$this->Auth->authenticate = array(
- *		'Authenticate.MultiColumns' => array(
+ *		'Authenticate.MultiColumn' => array(
  *			'fields' => array(
  *				'username' => 'username',
  *				'password' => 'password'
@@ -22,7 +22,7 @@ App::uses('FormAuthenticate', 'Controller/Component/Auth');
  * }}}
  *
  */
-class MultiColumnsAuthenticate extends FormAuthenticate {
+class MultiColumnAuthenticate extends FormAuthenticate {
 
 /**
  * Settings for this object.
