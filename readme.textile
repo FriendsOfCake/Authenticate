@@ -35,8 +35,10 @@ In app/Config/bootstrap.php add: CakePlugin::load('Authenticate');
 
 h2. Configuration:
 
-Setup the authentication class settings, for example:
+Setup the authentication class settings
 
+Example for MultiColumnAuthenticate:
+<pre><code>
     //in $componentents
     public $components = array(
         'Auth' => array(
@@ -66,6 +68,7 @@ Setup the authentication class settings, for example:
             'scope' => array('User.active' => 1)
         )
     );
+</code></pre>
 
 h2. License
 
