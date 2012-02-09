@@ -55,7 +55,6 @@ Example for MultiColumnAuthenticate:
             )
         )
     );
-
     //Or in beforeFilter()
     $this->Auth->authenticate = array(
         'Authenticate.MultiColumn' => array(
