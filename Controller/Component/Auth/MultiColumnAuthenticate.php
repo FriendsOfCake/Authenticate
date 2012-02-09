@@ -26,7 +26,7 @@ class MultiColumnAuthenticate extends FormAuthenticate {
  * Settings for this object.
  *
  * - `fields` The fields to use to identify a user by.
- * - 'columns' array of columns to use for username form input
+ * - 'columns' array of columns to check username form input against
  * - `userModel` The model name of the User, defaults to User.
  * - `scope` Additional conditions to use when looking up and authenticating users,
  *    i.e. `array('User.is_active' => 1).`
