@@ -12,9 +12,7 @@ App::uses('FormAuthenticate', 'Controller/Component/Auth');
  *				'username' => 'username',
  *				'password' => 'password'
  *	 		),
- *			'columns' => array(
- *				'username' => array('username', 'email')
- *			),
+ *			'columns' => array('username', 'email'),
  *			'userModel' => 'User',
  *			'scope' => array('User.active' => 1)
  *		)
@@ -40,9 +38,7 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 			'username' => 'username',
 			'password' => 'password'
 		),
-		'columns' => array(
-			'username' => array('username', 'email')
-		),
+		'columns' => array('username', 'email'),
 		'userModel' => 'User',
 		'scope' => array()
 	);
