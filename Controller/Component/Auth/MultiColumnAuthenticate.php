@@ -38,7 +38,7 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 			'username' => 'username',
 			'password' => 'password'
 		),
-		'columns' => array('username', 'email'),
+		'columns' => array(),
 		'userModel' => 'User',
 		'scope' => array()
 	);
@@ -54,17 +54,15 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 		$userModel = $this->settings['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
 		$fields = $this->settings['fields'];
-		$columns = $this->settings['columns'];
-		if (!$columns || !is_array($columns)) {
-			return false;
+		$conditions = array($model . '.' . $fields['username'] => $username);
+		if ($this->settings['columns'] && is_array($this->settings['columns'])) {
+			$columns = array();
+			foreach ($this->settings['columns'] as $column) {
+				$columns[] = array($model . '.' . $column => $username);
+			}
+			$conditions = array('OR' => $columns);
 		}
-		foreach ($columns as $key => $column) {
-			$columns[$key] = array($model . '.' . $column => $username);
-		}
-		$conditions = array(
-			'OR' => $columns,
-			$model . '.' . $fields['password'] => $this->_password($password),
-		);
+		$conditions = array_merge($conditions, array($model . '.' . $fields['password'] => $this->_password($password)));
 		if (!empty($this->settings['scope'])) {
 			$conditions = array_merge($conditions, $this->settings['scope']);
 		}
