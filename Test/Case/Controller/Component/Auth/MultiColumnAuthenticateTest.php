@@ -28,7 +28,7 @@ App::uses('CakeResponse', 'Network');
  *
  * @package       Cake.Test.Case.Controller.Component.Auth
  */
-class FormAuthenticateTest extends CakeTestCase {
+class MultiColumnAuthenticateTest extends CakeTestCase {
 
 	public $fixtures = array('plugin.authenticate.multi_user');
 
