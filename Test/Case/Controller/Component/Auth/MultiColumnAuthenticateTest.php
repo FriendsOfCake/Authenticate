@@ -71,7 +71,6 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
 			'password' => 'password'
 		));
 		$result = $this->auth->authenticate($request, $this->response);
-
 		$this->assertEquals($expected, $result);
 
 		$request->data = array('MultiUser' => array(
