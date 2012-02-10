@@ -57,12 +57,6 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
  * @return void
  */
 	public function testAuthenticateEmailOrUsername() {
-		$request = new CakeRequest('posts/index', false);
-		$request->data = array('MultiUser' => array(
-			'user' => 'mariano',
-			'password' => 'password'
-		));
-		$result = $this->auth->authenticate($request, $this->response);
 		$expected = array(
 			'id' => 1,
 			'user' => 'mariano',
@@ -70,6 +64,14 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
 			'created' => '2007-03-17 01:16:23',
 			'updated' => '2007-03-17 01:18:31'
 		);
+
+		$request = new CakeRequest('posts/index', false);
+		$request->data = array('MultiUser' => array(
+			'user' => 'mariano',
+			'password' => 'password'
+		));
+		$result = $this->auth->authenticate($request, $this->response);
+
 		$this->assertEquals($expected, $result);
 
 		$request->data = array('MultiUser' => array(
@@ -77,13 +79,6 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
 			'password' => 'password'
 		));
 		$result = $this->auth->authenticate($request, $this->response);
-		$expected = array(
-			'id' => 1,
-			'user' => 'mariano',
-			'email' => 'mariano@example.com',
-			'created' => '2007-03-17 01:16:23',
-			'updated' => '2007-03-17 01:18:31'
-		);
 		$this->assertEquals($expected, $result);
 	}
 
