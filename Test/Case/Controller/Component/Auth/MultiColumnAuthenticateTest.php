@@ -57,6 +57,7 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
  * @return void
  */
 	public function testAuthenticateEmailOrUsername() {
+		$request = new CakeRequest('posts/index', false);
 		$expected = array(
 			'id' => 1,
 			'user' => 'mariano',
@@ -65,7 +66,6 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
 			'updated' => '2007-03-17 01:18:31'
 		);
 
-		$request = new CakeRequest('posts/index', false);
 		$request->data = array('MultiUser' => array(
 			'user' => 'mariano',
 			'password' => 'password'
