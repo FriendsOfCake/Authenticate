@@ -21,26 +21,6 @@ App::uses('BaseAuthenticate', 'Authenticate.Controller/Component/Auth');
 class CookieAuthenticate extends BaseAuthenticate {
 
 /**
- * Settings for this object.
- *
- * - `fields` The fields to use to identify a user by.
- * - `userModel` The model name of the User, defaults to User.
- * - `scope` Additional conditions to use when looking up and authenticating users,
- *    i.e. `array('User.is_active' => 1).`
- *
- * @var array
- */
-	public $settings = array(
-		'fields' => array(
-			'username' => 'username',
-			'password' => 'password'
-		),
-		'columns' => array(),
-		'userModel' => 'User',
-		'scope' => array()
-	);
-
-/**
  * Constructor
  *
  * @param ComponentCollection $collection The Component collection used on this request.
