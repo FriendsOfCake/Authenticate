@@ -2,6 +2,11 @@ h1. Authenticate plugin
 
 Plugin containing some authenticate classes for AuthComponent.
 
+Current classes:
+* MultiColumnAuthenticate, allow login with multiple db columns in single username field
+  For example username or email
+* CookieAuthenticate, login with a cookie
+
 h2. Requirements
 
 * PHP 5.3
@@ -65,6 +70,64 @@ Example for MultiColumnAuthenticate:
             'columns' => array('username', 'email'),
             'userModel' => 'User',
             'scope' => array('User.active' => 1)
+        )
+    );
+</code></pre>
+
+Example for CookieAuthenticate:
+<pre><code>
+    //in $components
+    public $components = array(
+        'Auth' => array(
+            authenticate = array(
+                'Authenticate.Cookie' => array(
+                    'fields' => array(
+                        'username' => 'login',
+                        'password' => 'password'
+                    ),
+                    'userModel' => 'SomePlugin.User',
+                    'scope' => array('User.active' => 1)
+                )
+            )
+        )
+    );
+    //Or in beforeFilter()
+    $this->Auth->authenticate = array(
+        'Authenticate.Cookie' => array(
+            'fields' => array(
+                'username' => 'login',
+                'password' => 'password'
+            ),
+            'userModel' => 'SomePlugin.User',
+            'scope' => array('User.active' => 1)
+        )
+    );
+</code></pre>
+
+Example to setup both, it will first try to read the cookie, if that fails will try with form data:
+<pre><code>
+    //in $components
+    public $components = array(
+        'Auth' => array(
+            authenticate = array(
+                'Authenticate.Cookie' => array(
+                    'fields' => array(
+                        'username' => 'login',
+                        'password' => 'password'
+                    ),
+                    'userModel' => 'SomePlugin.User',
+                    'scope' => array('User.active' => 1)
+                ),
+                'Authenticate.MultiColumn' => array(
+                    'fields' => array(
+                        'username' => 'login',
+                        'password' => 'password'
+                    ),
+                    'columns' => array('username', 'email'),
+                    'userModel' => 'User',
+                    'scope' => array('User.active' => 1)
+                )
+            )
         )
     );
 </code></pre>

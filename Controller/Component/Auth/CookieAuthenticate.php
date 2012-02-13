@@ -1,0 +1,86 @@
+<?php
+App::uses('BaseAuthenticate', 'Authenticate.Controller/Component/Auth');
+
+/**
+ * An authentication adapter for AuthComponent.  Provides the ability to authenticate using COOKIE
+ *
+ * {{{
+ *	$this->Auth->authenticate = array(
+ *		'Authenticate.Cookie' => array(
+ *			'fields' => array(
+ *				'username' => 'username',
+ *				'password' => 'password'
+ *	 		),
+ *			'userModel' => 'User',
+ *			'scope' => array('User.active' => 1)
+ *		)
+ *	)
+ * }}}
+ *
+ */
+class CookieAuthenticate extends BaseAuthenticate {
+
+/**
+ * Settings for this object.
+ *
+ * - `fields` The fields to use to identify a user by.
+ * - `userModel` The model name of the User, defaults to User.
+ * - `scope` Additional conditions to use when looking up and authenticating users,
+ *    i.e. `array('User.is_active' => 1).`
+ *
+ * @var array
+ */
+	public $settings = array(
+		'fields' => array(
+			'username' => 'username',
+			'password' => 'password'
+		),
+		'columns' => array(),
+		'userModel' => 'User',
+		'scope' => array()
+	);
+
+/**
+ * Constructor
+ *
+ * @param ComponentCollection $collection The Component collection used on this request.
+ * @param array $settings Array of settings to use.
+ */
+	public function __construct(ComponentCollection $collection, $settings) {
+		parent::__construct($collection, $settings);
+		if (!isset($this->_Collection->Cookie) || !$this->_Collection->Cookie instanceof CookieComponent) {
+			throw new CakeException('CookieComponent is not loaded');
+		}
+	}
+
+/**
+ * Authenticates the identity contained in the cookie.  Will use the `settings.userModel`, and `settings.fields`
+ * to find COOKIE data that is used to find a matching record in the `settings.userModel`.  Will return false if
+ * there is no cookie data, either username or password is missing, of if the scope conditions have not been met.
+ *
+ * @param CakeRequest $request The unused request object
+ * @param CakeResponse $response Unused response object.
+ * @return mixed.  False on login failure.  An array of User data on success.
+ */
+	public function authenticate(CakeRequest $request, CakeResponse $response) {
+		$userModel = $this->settings['userModel'];
+		list($plugin, $model) = pluginSplit($userModel);
+
+		$fields = $this->settings['fields'];
+		$data = $this->_Collection->Cookie->read($model);
+		if (empty($data)) {
+			return false;
+		}
+		if (
+			empty($data[$fields['username']]) ||
+			empty($data[$fields['password']])
+		) {
+			return false;
+		}
+		return $this->_findUser(
+			$data[$fields['username']],
+			$data[$fields['password']]
+		);
+	}
+
+}
