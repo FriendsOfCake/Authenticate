@@ -47,7 +47,7 @@ Example for MultiColumnAuthenticate:
     //in $components
     public $components = array(
         'Auth' => array(
-            authenticate = array(
+            'authenticate' => array(
                 'Authenticate.MultiColumn' => array(
                     'fields' => array(
                         'username' => 'login',
@@ -79,7 +79,7 @@ Example for CookieAuthenticate:
     //in $components
     public $components = array(
         'Auth' => array(
-            authenticate = array(
+            'authenticate' => array(
                 'Authenticate.Cookie' => array(
                     'fields' => array(
                         'username' => 'login',
@@ -109,7 +109,7 @@ Example to setup both, it will first try to read the cookie, if that fails will 
     //in $components
     public $components = array(
         'Auth' => array(
-            authenticate = array(
+            'authenticate' => array(
                 'Authenticate.Cookie' => array(
                     'fields' => array(
                         'username' => 'login',
