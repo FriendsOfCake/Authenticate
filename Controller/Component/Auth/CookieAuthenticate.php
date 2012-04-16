@@ -1,5 +1,5 @@
 <?php
-App::uses('BaseAuthenticate', 'Authenticate.Controller/Component/Auth');
+App::uses('BaseAuthenticate', 'Controller/Component/Auth');
 
 /**
  * An authentication adapter for AuthComponent.  Provides the ability to authenticate using COOKIE
