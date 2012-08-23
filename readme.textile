@@ -132,6 +132,16 @@ Example to setup both, it will first try to read the cookie, if that fails will 
     );
 </code></pre>
 
+h3. Security
+
+For enhanced security, make sure you add this code to your AppController::beforeFilter() if you intend to use Cookie authentication:
+
+<pre><code>
+public function beforeFilter() {
+  $this->Cookie->type('rijndael'); //Enable AES symetric encryption of cookie
+}
+</code></pre>
+
 h2. License
 
 Copyright (c) 2012 Ceeram
