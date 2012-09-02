@@ -21,7 +21,7 @@ App::uses('GoogleAuthenticator', 'Authenticate.Lib');
  * }}}
  *
  */
-class GoogleAutenticate extends BaseAuthenticate {
+class GoogleAuthenticate extends BaseAuthenticate {
 
 /**
  * Settings for this object.
