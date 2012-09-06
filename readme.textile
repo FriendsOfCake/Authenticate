@@ -142,6 +142,10 @@ public function beforeFilter() {
 }
 </code></pre>
 
+h3. Setting the cookie
+
+Read more on the wiki: https://github.com/ceeram/Authenticate/wiki/Set-Cookie
+
 h2. License
 
 Copyright (c) 2012 Ceeram
