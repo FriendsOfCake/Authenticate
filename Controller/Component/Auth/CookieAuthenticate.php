@@ -21,19 +21,6 @@ App::uses('BaseAuthenticate', 'Controller/Component/Auth');
 class CookieAuthenticate extends BaseAuthenticate {
 
 /**
- * Constructor
- *
- * @param ComponentCollection $collection The Component collection used on this request.
- * @param array $settings Array of settings to use.
- */
-	public function __construct(ComponentCollection $collection, $settings) {
-		parent::__construct($collection, $settings);
-		if (!isset($this->_Collection->Cookie) || !$this->_Collection->Cookie instanceof CookieComponent) {
-			throw new CakeException('CookieComponent is not loaded');
-		}
-	}
-
-/**
  * Authenticates the identity contained in the cookie.  Will use the `settings.userModel`, and `settings.fields`
  * to find COOKIE data that is used to find a matching record in the `settings.userModel`.  Will return false if
  * there is no cookie data, either username or password is missing, of if the scope conditions have not been met.
@@ -43,11 +30,15 @@ class CookieAuthenticate extends BaseAuthenticate {
  * @return mixed.  False on login failure.  An array of User data on success.
  */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
+		if (!isset($this->_Collection->Cookie) || !$this->_Collection->Cookie instanceof CookieComponent) {
+			throw new CakeException('CookieComponent is not loaded');
+		}
 		$userModel = $this->settings['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
 
 		$fields = $this->settings['fields'];
 		$data = $this->_Collection->Cookie->read($model);
+
 		if (empty($data)) {
 			return false;
 		}
