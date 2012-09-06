@@ -17,8 +17,9 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-App::uses('AuthComponent', 'Controller/Component');
+App::uses('ComponentCollection', 'Controller');
 App::uses('CookieAuthenticate', 'Authenticate.Controller/Component/Auth');
+App::uses('CookieComponent', 'Controller/Component');
 App::uses('AppModel', 'Model');
 App::uses('CakeRequest', 'Network');
 App::uses('CakeResponse', 'Network');
@@ -39,7 +40,8 @@ class CookieAuthenticateTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Collection = $this->getMock('ComponentCollection');
+		$this->Collection = new ComponentCollection();
+		$this->Collection->Cookie = new CookieComponent($this->Collection);
 		$this->auth = new CookieAuthenticate($this->Collection, array(
 			'fields' => array('username' => 'user', 'password' => 'password'),
 			'userModel' => 'MultiUser',
@@ -48,6 +50,16 @@ class CookieAuthenticateTest extends CakeTestCase {
 		$User = ClassRegistry::init('MultiUser');
 		$User->updateAll(array('password' => $User->getDataSource()->value($password)));
 		$this->response = $this->getMock('CakeResponse');
+	}
+
+/**
+ * tearDown
+ *
+ * @return void
+ */
+	public function tearDown() {
+		parent::tearDown();
+		$this->Collection->Cookie->destroy();
 	}
 
 /**
@@ -65,6 +77,10 @@ class CookieAuthenticateTest extends CakeTestCase {
 			'updated' => '2007-03-17 01:18:31'
 		);
 
+		$result = $this->auth->authenticate($request, $this->response);
+		$this->assertFalse($result);
+
+		$this->Collection->Cookie->write('MultiUser', array('user' => 'mariano', 'password' => 'password'));
 		$result = $this->auth->authenticate($request, $this->response);
 		$this->assertEquals($expected, $result);
 	}
