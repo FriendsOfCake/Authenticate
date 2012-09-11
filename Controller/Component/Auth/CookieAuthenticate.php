@@ -12,7 +12,8 @@ App::uses('BaseAuthenticate', 'Controller/Component/Auth');
  *				'password' => 'password'
  *	 		),
  *			'userModel' => 'User',
- *			'scope' => array('User.active' => 1)
+ *			'scope' => array('User.active' => 1),
+ *			'crypt' => 'rijndael'// Defaults to rijndael(safest), optionally set to 'cipher' if required
  *		)
  *	)
  * }}}
@@ -33,25 +34,23 @@ class CookieAuthenticate extends BaseAuthenticate {
 		if (!isset($this->_Collection->Cookie) || !$this->_Collection->Cookie instanceof CookieComponent) {
 			throw new CakeException('CookieComponent is not loaded');
 		}
-		$userModel = $this->settings['userModel'];
-		list($plugin, $model) = pluginSplit($userModel);
 
-		$fields = $this->settings['fields'];
+		$this->settings = array_merge(array('crypt' => 'rijndael'), $this->settings);
+		$this->_Collection->Cookie->type($this->settings['crypt']);
+
+		list(, $model) = pluginSplit($this->settings['userModel']);
+
 		$data = $this->_Collection->Cookie->read($model);
-
 		if (empty($data)) {
 			return false;
 		}
-		if (
-			empty($data[$fields['username']]) ||
-			empty($data[$fields['password']])
-		) {
+
+		extract($this->settings['fields']);
+		if (empty($data[$username]) || empty($data[$password])) {
 			return false;
 		}
-		return $this->_findUser(
-			$data[$fields['username']],
-			$data[$fields['password']]
-		);
+
+		return $this->_findUser($data[$username], $data[$password]);
 	}
 
 }
