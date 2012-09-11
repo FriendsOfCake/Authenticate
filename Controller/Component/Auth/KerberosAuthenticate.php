@@ -4,7 +4,7 @@ App::uses('BasicAuthenticate', 'Controller/Component/Auth');
 class KerberosAuthenticate extends BasicAuthenticate {
 
 /**
- * Get a user based on information in the request.  Used by cookie-less auth for stateless clients.
+ * Get a user based on information in the request.
  *
  * @param CakeRequest $request Request object.
  * @return mixed Either false or an array of user information
@@ -13,17 +13,13 @@ class KerberosAuthenticate extends BasicAuthenticate {
 		$username = env('REMOTE_USER');
 
 		if (empty($username)) {
-			return false;
+			throw new UnauthorizedException('Username required');
 		}
-		return $this->_findUser(array('User.username' => $username));
+		$user = $this->_findUser(array('User.username' => $username));
+		if ($user) {
+			return $user;
+		}
+		throw new UnauthorizedException('Incorrect username');
 	}
 
-/**
- * Generate the login headers
- *
- * @return string Headers for logging in.
- */
-	public function loginHeaders() {
-		return sprintf('WWW-Authenticate: Kerberos realm="%s"', $this->settings['realm']);
-	}
 }
