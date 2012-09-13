@@ -6,6 +6,7 @@ Current classes:
 * MultiColumnAuthenticate, allow login with multiple db columns in single username field
   For example username or email
 * CookieAuthenticate, login with a cookie
+* TokenAuthenticate, login with a token as url parameter or header
 
 h2. Requirements
 
