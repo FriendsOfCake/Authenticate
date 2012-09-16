@@ -36,6 +36,9 @@ class CookieAuthenticate extends BaseAuthenticate {
 		}
 
 		$this->settings = array_merge(array('crypt' => 'rijndael'), $this->settings);
+		if ($this->settings['crypt'] == 'rijndael' && !function_exists('mcrypt_encrypt')) {
+			throw new CakeException('Cannot use type rijndael, mcrypt_encrypt() is required');
+		}
 		$this->_Collection->Cookie->type($this->settings['crypt']);
 
 		list(, $model) = pluginSplit($this->settings['userModel']);

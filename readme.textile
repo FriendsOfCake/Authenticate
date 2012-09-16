@@ -8,6 +8,8 @@ Current classes:
 * CookieAuthenticate, login with a cookie
 * TokenAuthenticate, login with a token as url parameter or header
 
+GoogleAuthenticate is moved to separate repo: https://github.com/ceeram/GoogleAuthenticate
+
 h2. Requirements
 
 * PHP 5.3
