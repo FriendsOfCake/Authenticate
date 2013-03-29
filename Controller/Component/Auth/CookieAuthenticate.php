@@ -43,17 +43,21 @@ class CookieAuthenticate extends BaseAuthenticate {
 
 		list(, $model) = pluginSplit($this->settings['userModel']);
 
-		$data = $this->_Collection->Cookie->read($model);
+		$data = array(
+			'username' => $request->data('User.username'),
+			'password' => $request->data('User.password')
+		);
+
 		if (empty($data)) {
 			return false;
 		}
 
 		extract($this->settings['fields']);
-		if (empty($data[$username]) || empty($data[$password])) {
+		if (empty($data['username']) || empty($data['password'])) {
 			return false;
 		}
 
-		return $this->_findUser($data[$username], $data[$password]);
+		return $this->_findUser($data['username'], $data['password']);
 	}
 
 }
