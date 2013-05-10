@@ -24,6 +24,7 @@ App::uses('SessionComponent', 'Controller/Component');
 App::uses('AppModel', 'Model');
 App::uses('CakeRequest', 'Network');
 App::uses('CakeResponse', 'Network');
+App::uses('Router', 'Routing');
 
 /**
  * Test case for FormAuthentication
