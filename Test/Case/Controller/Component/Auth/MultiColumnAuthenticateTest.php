@@ -62,6 +62,7 @@ class MultiColumnAuthenticateTest extends CakeTestCase {
 			'id' => 1,
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
+			'token' => '12345',
 			'created' => '2007-03-17 01:16:23',
 			'updated' => '2007-03-17 01:18:31'
 		);

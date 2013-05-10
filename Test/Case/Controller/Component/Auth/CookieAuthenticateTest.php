@@ -20,6 +20,7 @@
 App::uses('ComponentCollection', 'Controller');
 App::uses('CookieAuthenticate', 'Authenticate.Controller/Component/Auth');
 App::uses('CookieComponent', 'Controller/Component');
+App::uses('SessionComponent', 'Controller/Component');
 App::uses('AppModel', 'Model');
 App::uses('CakeRequest', 'Network');
 App::uses('CakeResponse', 'Network');
@@ -40,8 +41,11 @@ class CookieAuthenticateTest extends CakeTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		$this->request = new CakeRequest('posts/index', false);
+		Router::setRequestInfo($this->request);
 		$this->Collection = new ComponentCollection();
-		$this->Collection->Cookie = new CookieComponent($this->Collection);
+		$this->Collection->load('Cookie');
+		$this->Collection->load('Session');
 		$this->auth = new CookieAuthenticate($this->Collection, array(
 			'fields' => array('username' => 'user', 'password' => 'password'),
 			'userModel' => 'MultiUser',
@@ -68,20 +72,20 @@ class CookieAuthenticateTest extends CakeTestCase {
  * @return void
  */
 	public function testAuthenticate() {
-		$request = new CakeRequest('posts/index', false);
 		$expected = array(
 			'id' => 1,
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
+			'token' => '12345',
 			'created' => '2007-03-17 01:16:23',
 			'updated' => '2007-03-17 01:18:31'
 		);
 
-		$result = $this->auth->authenticate($request, $this->response);
+		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertFalse($result);
 
 		$this->Collection->Cookie->write('MultiUser', array('user' => 'mariano', 'password' => 'password'));
-		$result = $this->auth->authenticate($request, $this->response);
+		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertEquals($expected, $result);
 	}
 }

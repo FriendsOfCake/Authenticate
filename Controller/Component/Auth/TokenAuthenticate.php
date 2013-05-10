@@ -106,7 +106,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  * @param string $password Unused password.
  * @return Mixed Either false on failure, or an array of user data.
  */
-	public function _findUser($username) {
+	public function _findUser($username, $password = null) {
 		$userModel = $this->settings['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
 		$fields = $this->settings['fields'];

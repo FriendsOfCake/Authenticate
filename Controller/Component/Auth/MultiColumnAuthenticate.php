@@ -50,7 +50,7 @@ class MultiColumnAuthenticate extends FormAuthenticate {
  * @param string $password The unhashed password.
  * @return Mixed Either false on failure, or an array of user data.
  */
-	protected function _findUser($username, $password) {
+	protected function _findUser($username, $password = null) {
 		$userModel = $this->settings['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
 		$fields = $this->settings['fields'];
