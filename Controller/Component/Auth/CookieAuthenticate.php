@@ -4,7 +4,9 @@ App::uses('AuthComponent', 'Controller/Component');
 App::uses('Router', 'Routing');
 
 /**
- * An authentication adapter for AuthComponent.  Provides the ability to authenticate using COOKIE
+ * An authentication adapter for AuthComponent
+ *
+ * Provides the ability to authenticate using COOKIE
  *
  * {{{
  *	$this->Auth->authenticate = array(
@@ -24,6 +26,8 @@ App::uses('Router', 'Routing');
  *	)
  * }}}
  *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  */
 class CookieAuthenticate extends BaseAuthenticate {
 

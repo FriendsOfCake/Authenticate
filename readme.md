@@ -1,4 +1,4 @@
-h1. Authenticate plugin
+# Authenticate plugin
 
 Plugin containing some authenticate classes for AuthComponent.
 
@@ -10,12 +10,16 @@ Current classes:
 
 GoogleAuthenticate is moved to separate repo: https://github.com/ceeram/GoogleAuthenticate
 
-h2. Requirements
+## Requirements
 
 * PHP 5.3
 * CakePHP 2.x
 
-h2. Installation
+## Installation
+
+_[Composer]_
+
+run: `composer require ceeram/Authenticate` or add `ceeram/Authenticate` to `require` in your applications `composer.json`
 
 _[Manual]_
 
@@ -27,26 +31,27 @@ _[Manual]_
 _[GIT Submodule]_
 
 In your app directory type:
-<pre><code>git submodule add git://github.com/ceeram/Authenticate.git Plugin/Authenticate
+```
+git submodule add git://github.com/ceeram/Authenticate.git Plugin/Authenticate
 git submodule init
 git submodule update
-</code></pre>
+```
 
 _[GIT Clone]_
 
 In your plugin directory type
-<pre><code>git clone git://github.com/ceeram/Authenticate.git Authenticate</code></pre>
+`git clone git://github.com/ceeram/Authenticate.git Authenticate`
 
-h2. Usage
+## Usage
 
-In app/Config/bootstrap.php add: CakePlugin::load('Authenticate');
+In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
 
-h2. Configuration:
+## Configuration:
 
 Setup the authentication class settings
 
 Example for MultiColumnAuthenticate:
-<pre><code>
+```php
     //in $components
     public $components = array(
         'Auth' => array(
@@ -75,10 +80,10 @@ Example for MultiColumnAuthenticate:
             'scope' => array('User.active' => 1)
         )
     );
-</code></pre>
+```
 
 Example for CookieAuthenticate:
-<pre><code>
+```php
     //in $components
     public $components = array(
         'Auth' => array(
@@ -105,10 +110,10 @@ Example for CookieAuthenticate:
             'scope' => array('User.active' => 1)
         )
     );
-</code></pre>
+```
 
 Example to setup both, it will first try to read the cookie, if that fails will try with form data:
-<pre><code>
+```php
     //in $components
     public $components = array(
         'Auth' => array(
@@ -133,40 +138,19 @@ Example to setup both, it will first try to read the cookie, if that fails will 
             )
         )
     );
-</code></pre>
+```
 
-h3. Security
+### Security
 
-For enhanced security, make sure you add this code to your AppController::beforeFilter() if you intend to use Cookie authentication:
+For enhanced security, make sure you add this code to your `AppController::beforeFilter()` if you intend to use Cookie
+authentication:
 
-<pre><code>
+```php
 public function beforeFilter() {
   $this->Cookie->type('rijndael'); //Enable AES symetric encryption of cookie
 }
-</code></pre>
+```
 
-h3. Setting the cookie
+### Setting the cookie
 
 Read more on the wiki: https://github.com/ceeram/Authenticate/wiki/Set-Cookie
-
-h2. License
-
-Copyright (c) 2012 Ceeram
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.

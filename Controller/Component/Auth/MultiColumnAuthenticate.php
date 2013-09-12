@@ -2,8 +2,10 @@
 App::uses('FormAuthenticate', 'Controller/Component/Auth');
 
 /**
- * An authentication adapter for AuthComponent.  Provides the ability to authenticate using POST
- * data. The username form input can be checked against multiple table columns, for instance username and email
+ * An authentication adapter for AuthComponent
+ *
+ * Provides the ability to authenticate using POST data. The username form input can be checked against multiple table
+ * columns, for instance username and email
  *
  * {{{
  *	$this->Auth->authenticate = array(
@@ -19,6 +21,8 @@ App::uses('FormAuthenticate', 'Controller/Component/Auth');
  *	)
  * }}}
  *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  */
 class MultiColumnAuthenticate extends FormAuthenticate {
 
