@@ -23,10 +23,10 @@ run: `composer require ceeram/Authenticate` or add `ceeram/Authenticate` to `req
 
 _[Manual]_
 
-# Download this: http://github.com/ceeram/Authenticate/zipball/master
-# Unzip that download.
-# Copy the resulting folder to app/Plugin
-# Rename the folder you just copied to Authenticate
+* Download this: http://github.com/ceeram/Authenticate/zipball/master
+* Unzip that download.
+* Copy the resulting folder to app/Plugin
+* Rename the folder you just copied to Authenticate
 
 _[GIT Submodule]_
 
