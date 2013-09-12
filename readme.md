@@ -153,4 +153,47 @@ public function beforeFilter() {
 
 ### Setting the cookie
 
-Read more on the wiki: https://github.com/ceeram/Authenticate/wiki/Set-Cookie
+Example for setting the cookie:
+```php
+<?php
+App::uses('AppController', 'Controller');
+/**
+ * Users Controller
+ *
+ * @property User $User
+ */
+class UsersController extends AppController {
+
+	public $components = array('Cookie');
+
+	public function beforeFilter() {
+		$this->Cookie->type('rijndael');
+	}
+
+	public function login() {
+		if ($this->Auth->loggedIn() || $this->Auth->login()) {
+			$this->_setCookie($this->Auth->user('id'));
+			$this->redirect($this->Auth->redirect());
+		}
+	}
+
+	protected function _setCookie($id) {
+		if (!$this->request->data('User.remember_me')) {
+			return false;
+		}
+		$data = array(
+			'username' => $this->request->data('User.username'),
+			'password' => $this->request->data('User.password')
+		);
+		$this->Cookie->write('User', $data, true, '+1 week');
+		return true;
+	}
+
+	public function logout() {
+		$this->Auth->logout();
+		$this->Cookie->delete('User');
+		$this->Session->setFlash('Logged out');
+		$this->redirect($this->Auth->redirect('/'));
+	}
+}
+```
