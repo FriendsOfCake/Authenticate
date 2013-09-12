@@ -16,7 +16,7 @@ App::uses('BaseAuthenticate', 'Controller/Component/Auth');
  *				'password' => 'password',
  *				'token' => 'public_key',
  *			),
- *          'continue' => true
+ * 			'continue' => true
  *		)
  *	)
  * }}}
