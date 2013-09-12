@@ -7,15 +7,16 @@ App::uses('BaseAuthenticate', 'Controller/Component/Auth');
  * {{{
  *	$this->Auth->authenticate = array(
  *		'Authenticate.Token' => array(
+ *			'parameter' => '_token',
+ *			'header' => 'X-MyApiTokenHeader',
+ *			'userModel' => 'User',
+ *			'scope' => array('User.active' => 1)
  *			'fields' => array(
  *				'username' => 'username',
  *				'password' => 'password',
  *				'token' => 'public_key',
  *			),
- *			'parameter' => '_token',
- *			'header' => 'X-MyApiTokenHeader',
- *			'userModel' => 'User',
- *			'scope' => array('User.active' => 1)
+ * 			'continue' => true
  *		)
  *	)
  * }}}
@@ -26,29 +27,35 @@ class TokenAuthenticate extends BaseAuthenticate {
 /**
  * Settings for this object.
  *
- * - `fields` The fields to use to identify a user by. Make sure `'token'` has been added to the array
  * - `parameter` The url parameter name of the token.
  * - `header` The token header value.
  * - `userModel` The model name of the User, defaults to User.
+ * - `fields` The fields to use to identify a user by. Make sure `'token'` has been added to the array
  * - `scope` Additional conditions to use when looking up and authenticating users,
  *    i.e. `array('User.is_active' => 1).`
  * - `recursive` The value of the recursive key passed to find(). Defaults to 0.
  * - `contain` Extra models to contain and store in session.
+ * - `continue` Continue after trying token authentication or just throw the `unauthorized` exception.
+ * - `unauthorized` Exception name to throw or a status code as an integer.
  *
  * @var array
  */
 	public $settings = array(
+		'parameter' => '_token',
+		'header' => 'X-ApiToken',
+
+		'userModel' => 'User',
 		'fields' => array(
 			'username' => 'username',
 			'password' => 'password',
 			'token' => 'token',
 		),
-		'parameter' => '_token',
-		'header' => 'X-ApiToken',
-		'userModel' => 'User',
 		'scope' => array(),
 		'recursive' => 0,
 		'contain' => null,
+
+		'continue' => false,
+		'unauthorized' => 'BadRequestException'
 	);
 
 /**
@@ -65,18 +72,33 @@ class TokenAuthenticate extends BaseAuthenticate {
 	}
 
 /**
+ * Implemented because CakePHP forces you to.
  *
- * @param CakeRequest $request The request object
+ * @param CakeRequest $request The request object.
  * @param CakeResponse $response response object.
- * @return mixed.  False on login failure.  An array of User data on success.
+ * @return boolean Always false.
  */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
-		$user = $this->getUser($request);
-		if (!$user) {
-			$response->statusCode(401);
-			$response->send();
+		return false;
+	}
+
+/**
+ * If unauthenticated, try to authenticate and respond.
+ *
+ * @param CakeRequest $request The request object.
+ * @param CakeResponse $response The response object.
+ * @return boolean False on failure, user on success.
+ * @throws HttpException
+ */
+	public function unauthenticated(CakeRequest $request, CakeResponse $response) {
+		if ($this->settings['continue']) {
+			return false;
 		}
-		return $user;
+		if (is_string($this->settings['unauthorized'])) {
+			throw new $this->settings['unauthorized'];
+		}
+		$message = __d('authenticate', 'You are not authenticated.');
+		throw new HttpException($message, $this->settings['unauthorized']);
 	}
 
 /**
