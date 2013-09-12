@@ -50,7 +50,8 @@ In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
 
 Setup the authentication class settings
 
-Example for MultiColumnAuthenticate:
+### MultiColumnAuthenticate:
+
 ```php
     //in $components
     public $components = array(
@@ -82,7 +83,8 @@ Example for MultiColumnAuthenticate:
     );
 ```
 
-Example for CookieAuthenticate:
+### CookieAuthenticate:
+
 ```php
     //in $components
     public $components = array(
@@ -112,7 +114,9 @@ Example for CookieAuthenticate:
     );
 ```
 
-Example to setup both, it will first try to read the cookie, if that fails will try with form data:
+### Setup both:
+
+It will first try to read the cookie, if that fails will try with form data:
 ```php
     //in $components
     public $components = array(
@@ -196,4 +200,43 @@ class UsersController extends AppController {
 		$this->redirect($this->Auth->redirect('/'));
 	}
 }
+```
+
+### TokenAuthenticate
+
+```php
+    //in $components
+    public $components = array(
+        'Auth' => array(
+            authenticate = array(
+                'Authenticate.Token' => array(
+                    'parameter' => '_token',
+                    'header' => 'X-MyApiTokenHeader',
+                    'userModel' => 'User',
+                    'scope' => array('User.active' => 1),
+                    'fields' => array(
+                        'username' => 'username',
+                        'password' => 'password',
+                        'token' => 'public_key',
+                    ),
+                    'continue' => true
+                )
+            )
+        )
+    );
+    //Or in beforeFilter()
+    $this->Auth->authenticate = array(
+        'Authenticate.Token' => array(
+            'parameter' => '_token',
+            'header' => 'X-MyApiTokenHeader',
+            'userModel' => 'User',
+            'scope' => array('User.active' => 1),
+            'fields' => array(
+                'username' => 'username',
+                'password' => 'password',
+                'token' => 'public_key',
+            ),
+            'continue' => true
+        )
+    );
 ```
