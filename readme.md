@@ -1,6 +1,7 @@
 # Authenticate plugin
 
 [![Build Status](https://travis-ci.org/FriendsOfCake/Authenticate.png?branch=master)](https://travis-ci.org/FriendsOfCake/Authenticate)
+
 Plugin containing some authenticate classes for AuthComponent.
 
 Current classes:
@@ -20,11 +21,11 @@ GoogleAuthenticate is moved to separate repo: https://github.com/ceeram/GoogleAu
 
 _[Composer]_
 
-run: `composer require ceeram/Authenticate` or add `ceeram/Authenticate` to `require` in your applications `composer.json`
+run: `composer require friendsofcake/authenticate` or add `friendsofcake/authenticate` to `require` in your applications `composer.json`
 
 _[Manual]_
 
-* Download this: http://github.com/ceeram/Authenticate/zipball/master
+* Download this: http://github.com/FriendsOfCake/Authenticate/zipball/master
 * Unzip that download.
 * Copy the resulting folder to app/Plugin
 * Rename the folder you just copied to Authenticate
@@ -33,7 +34,7 @@ _[GIT Submodule]_
 
 In your app directory type:
 ```
-git submodule add git://github.com/ceeram/Authenticate.git Plugin/Authenticate
+git submodule add git://github.com/FriendsOfCake/Authenticate.git Plugin/Authenticate
 git submodule init
 git submodule update
 ```
@@ -41,7 +42,7 @@ git submodule update
 _[GIT Clone]_
 
 In your plugin directory type
-`git clone git://github.com/ceeram/Authenticate.git Authenticate`
+`git clone git://github.com/FriendsOfCake/Authenticate.git Authenticate`
 
 ## Usage
 
