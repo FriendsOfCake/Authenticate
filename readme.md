@@ -1,5 +1,6 @@
 # Authenticate plugin
 
+[![Build Status](https://travis-ci.org/FriendsOfCake/Authenticate.png?branch=master)](https://travis-ci.org/FriendsOfCake/Authenticate)
 Plugin containing some authenticate classes for AuthComponent.
 
 Current classes:
