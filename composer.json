@@ -1,11 +1,26 @@
 {
-	"name": "ceeram/Authenticate",
-	"type": "cakephp-plugin",
-        "description": "CakePHP plugin with authentication classes for AuthComponent.",
-	"homepage": "http://github.com/ceeram/Authenticate",
-	"license": "MIT",
-	"require": {
-		"php": ">=5.3.0",
-		"composer/installers": "*"
-	}
+    "name": "friendsofcake/authenticate",
+    "type": "cakephp-plugin",
+    "description": "CakePHP plugin with authentication classes for AuthComponent.",
+    "keywords":[
+        "cakephp",
+        "authenticate"
+    ],
+    "homepage": "http://github.com/FriendsOfCake/Authenticate",
+    "authors":[
+        {
+            "name":"Ceeram",
+            "role":"Author"
+        }
+    ],
+    "license": "MIT",
+    "support":{
+        "source":"https://github.com/FriendsOfCake/Authenticate",
+        "issues":"https://github.com/FriendsOfCake/Authenticate/issues",
+        "irc":"irc://irc.freenode.org/friendsofcake"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "composer/installers": "*"
+    }
 }
