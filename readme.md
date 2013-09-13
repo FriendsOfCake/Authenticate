@@ -1,6 +1,7 @@
 # Authenticate plugin
 
 [![Build Status](https://travis-ci.org/FriendsOfCake/Authenticate.png?branch=master)](https://travis-ci.org/FriendsOfCake/Authenticate)
+[![Coverage Status](https://coveralls.io/repos/FriendsOfCake/Authenticate/badge.png)](https://coveralls.io/r/FriendsOfCake/Authenticate)
 
 Plugin containing some authenticate classes for AuthComponent.
 
