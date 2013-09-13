@@ -93,14 +93,16 @@ class TokenAuthenticate extends BaseAuthenticate {
  * @param CakeRequest $request The request object.
  * @param CakeResponse $response The response object.
  * @return boolean False on failure, user on success.
- * @throws HttpException
+ * @throws HttpException or the one specified using $settings['unauthorized']
  */
 	public function unauthenticated(CakeRequest $request, CakeResponse $response) {
 		if ($this->settings['continue']) {
 			return false;
 		}
 		if (is_string($this->settings['unauthorized'])) {
+			// @codingStandardsIgnoreStart
 			throw new $this->settings['unauthorized'];
+			// @codingStandardsIgnoreEnd
 		}
 		$message = __d('authenticate', 'You are not authenticated.');
 		throw new HttpException($message, $this->settings['unauthorized']);
