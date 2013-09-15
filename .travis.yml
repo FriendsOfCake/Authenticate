@@ -2,18 +2,16 @@ language: php
 
 php:
   - 5.3
-  - 5.4
-  - 5.5
+#  - 5.4
+#  - 5.5
 
 env:
   global:
     - REPO_NAME=Authenticate
     - PLUGIN_NAME=Authenticate
   matrix:
-    - CAKE_VERSION=master DB=mysql
-    - CAKE_VERSION=master DB=pgsql
-    - CAKE_VERSION=2.5 DB=mysql
-    - CAKE_VERSION=2.5 DB=pgsql
+    - DB=mysql CAKE_VERSION=master
+    - DB=mysql CAKE_VERSION=2.5
 
 matrix:
   include:
@@ -25,11 +23,12 @@ matrix:
         - DB=mysql CAKE_VERSION=master PHPCS=1
 
 before_script:
-  - ./travis.sh
-  - cd ../cakephp
+  - ./.travis/travis.sh
+  - cd ../cakephp/app
+  - cat Config/bootstrap.php
 
 script:
-  - ./lib/Cake/Console/cake test $PLUGIN_NAME All$PLUGIN_NAME --stderr --coverage-clover build/logs/clover.xml
+  - sh -c "if [ '$PHPCS' != '1' ]; then ./Console/cake test $PLUGIN_NAME All$PLUGIN_NAME --stderr --coverage-clover build/logs/clover.xml; else phpcs -p --ignore='*/Test/*' --extensions=php --standard=CakePHP ./Plugin/$PLUGIN_NAME; fi"
 
 after_success:
   - sh -c "if [ '$COVERALLS' = '1' ]; then php vendor/bin/coveralls -c .coveralls.yml -v; fi"
