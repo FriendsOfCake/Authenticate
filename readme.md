@@ -154,7 +154,10 @@ authentication:
 
 ```php
 public function beforeFilter() {
-  $this->Cookie->type('rijndael'); //Enable AES symetric encryption of cookie
+	$this->Cookie->type('rijndael'); //Enable AES symetric encryption of cookie
+	if(!function_exists('mcrypt_decrypt')){
+		$this->Cookie->type('cipher'); //Backward compatibility if mcrypt functions doesn't exists
+	}
 }
 ```
 
@@ -175,30 +178,34 @@ class UsersController extends AppController {
 
 	public function beforeFilter() {
 		$this->Cookie->type('rijndael');
+		if(!function_exists('mcrypt_decrypt')){
+			$this->Cookie->type('cipher');
+		}
 	}
 
 	public function login() {
 		if ($this->Auth->loggedIn() || $this->Auth->login()) {
-			$this->_setCookie($this->Auth->user('id'));
+			$this->_setCookie();
 			$this->redirect($this->Auth->redirect());
 		}
 	}
 
-	protected function _setCookie($id) {
+	protected function _setCookie() {
 		if (!$this->request->data('User.remember_me')) {
+			$this->Cookie->delete('RememberMe');
 			return false;
 		}
 		$data = array(
 			'username' => $this->request->data('User.username'),
 			'password' => $this->request->data('User.password')
 		);
-		$this->Cookie->write('User', $data, true, '+1 week');
+		$this->Cookie->write('RememberMe', $data, true, '+1 week');
 		return true;
 	}
 
 	public function logout() {
 		$this->Auth->logout();
-		$this->Cookie->delete('User');
+		$this->Cookie->delete('RememberMe');
 		$this->Session->setFlash('Logged out');
 		$this->redirect($this->Auth->redirect('/'));
 	}

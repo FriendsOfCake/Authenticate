@@ -38,6 +38,9 @@ class CookieAuthenticate extends BaseAuthenticate {
 			'base' => Router::getRequest()->base
 		);
 		$this->settings['crypt'] = 'rijndael';
+		if(!function_exists('mcrypt_decrypt')){
+			$settings['crypt'] = 'cipher';
+		}
 		parent::__construct($collection, $settings);
 	}
 
@@ -56,9 +59,8 @@ class CookieAuthenticate extends BaseAuthenticate {
 		}
 
 		$this->_Collection->Cookie->type($this->settings['crypt']);
-		list(, $model) = pluginSplit($this->settings['userModel']);
+		$data = $this->_Collection->Cookie->read($this->settings['cookie']['name']);
 
-		$data = $this->_Collection->Cookie->read($model);
 		if (empty($data)) {
 			return false;
 		}
@@ -81,7 +83,7 @@ class CookieAuthenticate extends BaseAuthenticate {
 	}
 
 	public function logout($user) {
-		$this->_Collection->Cookie->destroy();
+		$this->_Collection->Cookie->delete($this->settings['cookie']['name']);
 	}
 
 }
