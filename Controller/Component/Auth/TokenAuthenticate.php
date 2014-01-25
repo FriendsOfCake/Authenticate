@@ -84,7 +84,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  * @return boolean Always false.
  */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
-		return false;
+		return $this->getUser($request);
 	}
 
 /**
