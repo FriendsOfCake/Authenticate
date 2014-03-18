@@ -211,7 +211,7 @@ class UsersController extends AppController {
     //in $components
     public $components = array(
         'Auth' => array(
-            'authenticate' = array(
+            'authenticate' => array(
                 'Authenticate.Token' => array(
                     'parameter' => '_token',
                     'header' => 'X-MyApiTokenHeader',
