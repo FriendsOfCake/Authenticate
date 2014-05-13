@@ -179,12 +179,12 @@ class UsersController extends AppController {
 
 	public function login() {
 		if ($this->Auth->loggedIn() || $this->Auth->login()) {
-			$this->_setCookie($this->Auth->user('id'));
+			$this->_setCookie();
 			$this->redirect($this->Auth->redirect());
 		}
 	}
 
-	protected function _setCookie($id) {
+	protected function _setCookie() {
 		if (!$this->request->data('User.remember_me')) {
 			return false;
 		}
