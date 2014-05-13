@@ -35,9 +35,9 @@ class CookieAuthenticate extends BaseAuthenticate {
 		$this->settings['cookie'] = array(
 			'name' => 'RememberMe',
 			'time' => '+2 weeks',
-			'base' => Router::getRequest()->base
+			'base' => Router::getRequest()->base,
+			'crypt' => 'rijndael',
 		);
-		$this->settings['crypt'] = 'rijndael';
 		parent::__construct($collection, $settings);
 	}
 
