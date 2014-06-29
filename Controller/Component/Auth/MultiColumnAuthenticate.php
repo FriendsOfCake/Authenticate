@@ -44,7 +44,10 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 		),
 		'columns' => array(),
 		'userModel' => 'User',
-		'scope' => array()
+		'scope' => array(),
+		'recursive' => 0,
+		'contain' => null,
+		'passwordHasher' => 'Simple'
 	);
 
 /**
@@ -66,19 +69,30 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 			}
 			$conditions = array('OR' => $columns);
 		}
-		$conditions = array_merge($conditions, array($model . '.' . $fields['password'] => $this->_password($password)));
 		if (!empty($this->settings['scope'])) {
 			$conditions = array_merge($conditions, $this->settings['scope']);
 		}
 		$result = ClassRegistry::init($userModel)->find('first', array(
 			'conditions' => $conditions,
-			'recursive' => 0
+			'recursive' => (int)$this->settings['recursive'],
+			'contain' => $this->settings['contain'],
 		));
-		if (empty($result) || empty($result[$model])) {
+
+		if (empty($result[$model])) {
+			$this->passwordHasher()->hash($password);
 			return false;
 		}
-		unset($result[$model][$fields['password']]);
-		return $result[$model];
+
+		$user = $result[$model];
+		if ($password !== null) {
+			if (!@$this->passwordHasher()->check($password, $user[$fields['password']])) {
+				return false;
+			}
+			unset($user[$fields['password']]);
+		}
+
+		unset($result[$model]);
+		return array_merge($user, $result);
 	}
 
 }
