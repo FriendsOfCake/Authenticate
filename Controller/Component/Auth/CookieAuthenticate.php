@@ -31,6 +31,12 @@ App::uses('Router', 'Routing');
  */
 class CookieAuthenticate extends BaseAuthenticate {
 
+/**
+ * Constructor
+ *
+ * @param ComponentCollection $collection Components collection.
+ * @param array $settings Settings
+ */
 	public function __construct(ComponentCollection $collection, $settings) {
 		$this->settings['cookie'] = array(
 			'name' => 'RememberMe',
@@ -42,9 +48,11 @@ class CookieAuthenticate extends BaseAuthenticate {
 	}
 
 /**
- * Authenticates the identity contained in the cookie.  Will use the `settings.userModel`, and `settings.fields`
- * to find COOKIE data that is used to find a matching record in the `settings.userModel`.  Will return false if
- * there is no cookie data, either username or password is missing, of if the scope conditions have not been met.
+ * Authenticates the identity contained in the cookie.  Will use the
+ * `settings.userModel`, and `settings.fields` to find COOKIE data that is used
+ * to find a matching record in the `settings.userModel`. Will return false if
+ * there is no cookie data, either username or password is missing, of if the
+ * scope conditions have not been met.
  *
  * @param CakeRequest $request The unused request object
  * @return mixed False on login failure. An array of User data on success.
@@ -76,10 +84,23 @@ class CookieAuthenticate extends BaseAuthenticate {
 		return false;
 	}
 
+/**
+ * Authenticate user
+ *
+ * @param CakeRequest $request Request object.
+ * @param CakeResponse $response Response object.
+ * @return array|boolean Array of user info on success, false on falure.
+ */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
 		return $this->getUser($request);
 	}
 
+/**
+ * Called from AuthComponent::logout()
+ *
+ * @param array $user User record
+ * @return void
+ */
 	public function logout($user) {
 		$this->_Collection->Cookie->destroy();
 	}
