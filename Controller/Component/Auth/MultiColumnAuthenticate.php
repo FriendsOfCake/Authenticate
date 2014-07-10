@@ -44,7 +44,8 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 		),
 		'columns' => array(),
 		'userModel' => 'User',
-		'scope' => array()
+		'scope' => array(),
+		'contain' => null
 	);
 
 /**
@@ -72,13 +73,16 @@ class MultiColumnAuthenticate extends FormAuthenticate {
 		}
 		$result = ClassRegistry::init($userModel)->find('first', array(
 			'conditions' => $conditions,
-			'recursive' => 0
+			'recursive' => 0,
+			'contain' => $this->settings['contain'],
 		));
 		if (empty($result) || empty($result[$model])) {
 			return false;
 		}
-		unset($result[$model][$fields['password']]);
-		return $result[$model];
+		$user = $result[$model];
+		unset($user[$fields['password']]);
+		unset($result[$model]);
+		return array_merge($user, $result);
 	}
 
 }
