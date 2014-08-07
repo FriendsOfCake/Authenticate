@@ -11,6 +11,11 @@
         {
             "name":"Ceeram",
             "role":"Author"
+        },
+        {
+            "name":"ADmad",
+            "role":"Developer",
+            "homepage":"https://github.com/ADmad"
         }
     ],
     "license": "MIT",
@@ -20,7 +25,17 @@
         "irc":"irc://irc.freenode.org/friendsofcake"
     },
     "require": {
-        "php": ">=5.3.0",
+        "php": ">=5.4.0",
         "composer/installers": "*"
+    },
+    "require-dev": {
+        "cakephp/cakephp": "3.0.*-dev",
+        "phpunit/phpunit": "4.1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "FOC\\Authenticate\\": "src",
+            "FOC\\Authenticate\\Test\\": "tests"
+        }
     }
 }
