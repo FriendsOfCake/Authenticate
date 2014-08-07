@@ -1,10 +1,14 @@
 <?php
+namespace FOC\Authenticate\Auth\Test\TestCase;
+
+use Cake\TestSuite\TestCase;
+
 /**
  * All Authenticate plugin tests
  *
  * @package       Cake.Test.Case.Controller.Component.Auth
  */
-class AllAuthenticateTest extends CakeTestCase {
+class AllAuthenticateTest extends TestCase {
 
 /**
  * Suite define the tests for this suite

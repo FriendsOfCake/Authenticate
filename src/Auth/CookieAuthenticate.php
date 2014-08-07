@@ -1,7 +1,9 @@
 <?php
-App::uses('BaseAuthenticate', 'Controller/Component/Auth');
-App::uses('AuthComponent', 'Controller/Component');
-App::uses('Router', 'Routing');
+namespace FOC\Authenticate\Auth;
+
+use Cake\Auth\BaseAuthenticate;
+use Cake\Controller\Component\AuthComponent;
+use Cake\Routing\Router;
 
 /**
  * An authentication adapter for AuthComponent

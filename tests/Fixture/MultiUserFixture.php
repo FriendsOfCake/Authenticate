@@ -1,5 +1,9 @@
 <?php
-class MultiUserFixture extends CakeTestFixture {
+namespace FOC\Authenticate\Auth\Test\Fixture;
+
+use Cake\TestSuite\Fixture\TestFixture;
+
+class MultiUserFixture extends TestFixture {
 
 /**
  * name property

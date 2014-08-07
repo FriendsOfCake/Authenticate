@@ -1,5 +1,7 @@
 <?php
-App::uses('FormAuthenticate', 'Controller/Component/Auth');
+namespace FOC\Authenticate\Auth;
+
+use Cake\Auth\FormAuthenticate;
 
 /**
  * An authentication adapter for AuthComponent

@@ -1,37 +1,23 @@
 <?php
-/**
- * CookieAuthenticateTest file
- *
- * PHP 5
- *
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- *
- * Licensed under The MIT License
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @package       Cake.Test.Case.Controller.Component.Auth
- * @since         CakePHP(tm) v 2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
- */
+namespace FOC\Authenticate\Auth\Test\TestCase\Auth;
 
-App::uses('ComponentCollection', 'Controller');
-App::uses('CookieAuthenticate', 'Authenticate.Controller/Component/Auth');
-App::uses('CookieComponent', 'Controller/Component');
-App::uses('SessionComponent', 'Controller/Component');
-App::uses('AppModel', 'Model');
-App::uses('CakeRequest', 'Network');
-App::uses('CakeResponse', 'Network');
-App::uses('Router', 'Routing');
+use Cake\Auth\BasicAuthenticate;
+use Cake\Controller\Component\ComponentRegistry;
+use Cake\Controller\Component\CookieComponent;
+use Cake\Controller\Component\SessionComponent;
+use Cake\Network\Request;
+use Cake\Network\Response;
+use Cake\ORM\Table;
+use Cake\Routing\Router;
+use Cake\TestSuite\TestCase;
+use FOC\Authenticate\Auth\CookieAuthenticate;
 
 /**
  * Test case for FormAuthentication
  *
  * @package       Cake.Test.Case.Controller.Component.Auth
  */
-class CookieAuthenticateTest extends CakeTestCase {
+class CookieAuthenticateTest extends TestCase {
 
 	public $fixtures = array('plugin.authenticate.multi_user');
 
