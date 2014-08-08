@@ -2,7 +2,11 @@
 namespace FOC\Authenticate\Auth;
 
 use Cake\Auth\BaseAuthenticate;
-use Cake\Controller\Component\AuthComponent;
+use Cake\Controller\ComponentRegistry;
+use Cake\Controller\Component\CookieComponent;
+use Cake\Error\Exception;
+use Cake\Network\Request;
+use Cake\Network\Response;
 use Cake\Routing\Router;
 
 /**
@@ -11,21 +15,21 @@ use Cake\Routing\Router;
  * Provides the ability to authenticate using COOKIE
  *
  * {{{
- *	$this->Auth->authenticate = array(
- *		'Authenticate.Cookie' => array(
- *			'fields' => array(
+ *	$this->Auth->config('authenticate', [
+ *		'Authenticate.Cookie' => [
+ *			'fields' => [
  *				'username' => 'username',
  *				'password' => 'password'
- *	 		),
- *			'userModel' => 'User',
- *			'scope' => array('User.active' => 1),
- *			'crypt' => 'rijndael', // Defaults to rijndael(safest), optionally set to 'cipher' if required
- *			'cookie' => array(
+ *	 		],
+ *			'userModel' => 'Users',
+ *			'scope' => ['Users.active' => 1],
+ *			'crypt' => 'aes',
+ *			'cookie' => [
  *				'name' => 'RememberMe',
  *				'time' => '+2 weeks',
- *			)
- *		)
- *	)
+ *			]
+ *		]
+ *	]);
  * }}}
  *
  * Licensed under The MIT License
@@ -36,64 +40,78 @@ class CookieAuthenticate extends BaseAuthenticate {
 /**
  * Constructor
  *
- * @param ComponentCollection $collection Components collection.
- * @param array $settings Settings
+ * @param \Cake\Controller\ComponentRegistry $registry The Component registry
+ *   used on this request.
+ * @param array $config Array of config to use.
  */
-	public function __construct(ComponentCollection $collection, $settings) {
-		$this->settings['cookie'] = array(
-			'name' => 'RememberMe',
-			'time' => '+2 weeks',
-			'base' => Router::getRequest()->base
-		);
-		$this->settings['crypt'] = 'rijndael';
-		parent::__construct($collection, $settings);
+	public function __construct(ComponentRegistry $registry, $config) {
+		$this->_registry = $registry;
+
+		$this->config([
+			'cookie' => [
+				'name' => 'RememberMe',
+				'expires' => '+2 weeks',
+				'base' => Router::getRequest()->base
+			],
+			'crypt' => ''
+		]);
+
+		$this->config($config);
 	}
 
 /**
  * Authenticates the identity contained in the cookie.  Will use the
- * `settings.userModel`, and `settings.fields` to find COOKIE data that is used
- * to find a matching record in the `settings.userModel`. Will return false if
- * there is no cookie data, either username or password is missing, of if the
- * scope conditions have not been met.
+ * `userModel` config, and `fields` config to find COOKIE data that is used
+ * to find a matching record in the model specified by `userModel`. Will return
+ * false if there is no cookie data, either username or password is missing,
+ * or if the scope conditions have not been met.
  *
- * @param CakeRequest $request The unused request object
+ * @param Request $request The unused request object
  * @return mixed False on login failure. An array of User data on success.
- * @throws CakeException
+ * @throws Cake\Error\Exception
  */
-	public function getUser(CakeRequest $request) {
-		if (!isset($this->_Collection->Cookie) || !$this->_Collection->Cookie instanceof CookieComponent) {
-			throw new CakeException('CookieComponent is not loaded');
+	public function getUser(Request $request) {
+		if (!isset($this->_registry->Cookie) ||
+			!$this->_registry->Cookie instanceof CookieComponent
+		) {
+			throw new Exception('CookieComponent is not loaded');
 		}
 
-		$this->_Collection->Cookie->type($this->settings['crypt']);
-		list(, $model) = pluginSplit($this->settings['userModel']);
+		$cookieConfig = $this->_config['cookie'];
+		$cookieName = $this->_config['cookie']['name'];
+		unset($cookieConfig['name']);
+		$this->_registry->Cookie->configKey($cookieName, $cookieConfig);
 
-		$data = $this->_Collection->Cookie->read($model);
+		$data = $this->_registry->Cookie->read($cookieName);
 		if (empty($data)) {
 			return false;
 		}
 
-		extract($this->settings['fields']);
+		extract($this->_config['fields']);
 		if (empty($data[$username]) || empty($data[$password])) {
 			return false;
 		}
 
 		$user = $this->_findUser($data[$username], $data[$password]);
 		if ($user) {
-			$this->_Collection->Session->write(AuthComponent::$sessionKey, $user);
+			$this->_registry->Session->write(
+				$this->_registry->Auth->sessionKey,
+				$user
+			);
 			return $user;
 		}
+
 		return false;
 	}
 
 /**
  * Authenticate user
  *
- * @param CakeRequest $request Request object.
- * @param CakeResponse $response Response object.
+ * @param Request $request Request object.
+ * @param Response $response Response object.
  * @return array|boolean Array of user info on success, false on falure.
  */
-	public function authenticate(CakeRequest $request, CakeResponse $response) {
+	public function authenticate(Request $request, Response $response) {
 		return $this->getUser($request);
 	}
 
@@ -104,7 +122,7 @@ class CookieAuthenticate extends BaseAuthenticate {
  * @return void
  */
 	public function logout($user) {
-		$this->_Collection->Cookie->destroy();
+		$this->_registry->Cookie->delete($this->_config['cookie']['name']);
 	}
 
 }
