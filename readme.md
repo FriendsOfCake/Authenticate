@@ -19,8 +19,9 @@ Current classes:
 
 _[Composer]_
 
-run: `composer require friendsofcake/authenticate` or
-add `friendsofcake/authenticate` to `require` in your applications `composer.json`.
+run: `composer require friendsofcake/authenticate:dev-cake3` or
+add `"friendsofcake/authenticate":"dev-cake3"` to `require` section in your
+application's `composer.json`.
 
 ## Usage
 
