@@ -5,18 +5,17 @@ use Cake\Controller\Controller;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Network\Request;
 use Cake\Network\Response;
-use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Time;
 use FOC\Authenticate\Auth\TokenAuthenticate;
 
 /**
  * Test case for FormAuthentication
- *
- * @package       Cake.Test.Case.Controller.Component.Auth
  */
 class TokenAuthenticateTest extends TestCase {
 
-	public $fixtures = array('plugin.authenticate.multi_user');
+	public $fixtures = ['plugin.FOC\Authenticate.multi_user'];
 
 /**
  * setup
@@ -25,19 +24,22 @@ class TokenAuthenticateTest extends TestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Collection = $this->getMock('ComponentCollection');
-		$this->auth = new TokenAuthenticate($this->Collection, array(
-			'fields' => array(
+
+		$this->Registry = $this->getMock('Cake\Controller\ComponentRegistry');
+		$this->auth = new TokenAuthenticate($this->Registry, [
+			'fields' => [
 				'username' => 'user',
 				'password' => 'password',
 				'token' => 'token'
-			),
-			'userModel' => 'MultiUser',
-		));
-		$password = Security::hash('password', null, true);
-		$User = ClassRegistry::init('MultiUser');
-		$User->updateAll(array('password' => $User->getDataSource()->value($password)));
-		$this->response = $this->getMock('CakeResponse');
+			],
+			'userModel' => 'MultiUsers'
+		]);
+
+		$password = password_hash('password', PASSWORD_DEFAULT);
+		$MultiUsers = TableRegistry::get('MultiUsers');
+		$MultiUsers->updateAll(['password' => $password], []);
+
+		$this->response = $this->getMock('Cake\Network\Response');
 	}
 
 /**
@@ -46,26 +48,26 @@ class TokenAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateTokenParameter() {
-		$this->auth->settings['_parameter'] = 'token';
-		$request = new CakeRequest('posts/index?_token=54321');
+		$this->auth->config('_parameter', 'token');
+		$request = new Request('posts/index?_token=54321');
 
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertFalse($result);
 
 		$expected = array(
-			'id' => '1',
+			'id' => 1,
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
-			'created' => '2007-03-17 01:16:23',
-			'updated' => '2007-03-17 01:18:31'
+			'created' => new Time('2007-03-17 01:16:23'),
+			'updated' => new Time('2007-03-17 01:18:31')
 		);
-		$request = new CakeRequest('posts/index?_token=12345');
+		$request = new Request('posts/index?_token=12345');
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);
 
-		$this->auth->settings['parameter'] = 'tokenname';
-		$request = new CakeRequest('posts/index?tokenname=12345');
+		$this->auth->config('parameter', 'tokenname');
+		$request = new Request('posts/index?tokenname=12345');
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);
 	}
@@ -76,23 +78,23 @@ class TokenAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateTokenHeader() {
-		$_SERVER['HTTP_X_APITOKEN'] = '54321';
-		$request = new CakeRequest('posts/index', false);
-
-		$result = $this->auth->getUser($request, $this->response);
-		$this->assertFalse($result);
+		$request = new Request('posts/index');
 
 		$expected = array(
-			'id' => '1',
+			'id' => 1,
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
-			'created' => '2007-03-17 01:16:23',
-			'updated' => '2007-03-17 01:18:31'
+			'created' => new Time('2007-03-17 01:16:23'),
+			'updated' => new Time('2007-03-17 01:18:31')
 		);
-		$_SERVER['HTTP_X_APITOKEN'] = '12345';
+		$request->env('HTTP_X_APITOKEN', '12345');
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);
+
+		$request->env('HTTP_X_APITOKEN', '66666');
+		$result = $this->auth->getUser($request, $this->response);
+		$this->assertFalse($result);
 	}
 
 }

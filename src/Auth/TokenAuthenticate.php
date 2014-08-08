@@ -2,6 +2,11 @@
 namespace FOC\Authenticate\Auth;
 
 use Cake\Auth\BaseAuthenticate;
+use Cake\Controller\ComponentRegistry;
+use Cake\Error\Exception;
+use Cake\Network\Request;
+use Cake\Network\Response;
+use Cake\ORM\TableRegistry;
 
 /**
  * An authentication adapter for AuthComponent
@@ -9,20 +14,18 @@ use Cake\Auth\BaseAuthenticate;
  * Provides the ability to authenticate using Token
  *
  * {{{
- *	$this->Auth->authenticate = array(
- *		'Authenticate.Token' => array(
+ *	$this->Auth->config('authenticate', [
+ *		'FOC/Authenticate.Token' => [
  *			'parameter' => '_token',
  *			'header' => 'X-MyApiTokenHeader',
- *			'userModel' => 'User',
- *			'scope' => array('User.active' => 1)
- *			'fields' => array(
- *				'username' => 'username',
- *				'password' => 'password',
+ *			'userModel' => 'Users',
+ *			'scope' => ['User.active' => 1]
+ *			'fields' => [
  *				'token' => 'public_key',
- *			),
+ *			],
  * 			'continue' => true
- *		)
- *	)
+ *		]
+ *	]);
  * }}}
  *
  * Licensed under The MIT License
@@ -31,100 +34,99 @@ use Cake\Auth\BaseAuthenticate;
 class TokenAuthenticate extends BaseAuthenticate {
 
 /**
+ * Constructor.
+ *
  * Settings for this object.
  *
  * - `parameter` The url parameter name of the token.
  * - `header` The token header value.
- * - `userModel` The model name of the User, defaults to User.
- * - `fields` The fields to use to identify a user by. Make sure `'token'` has been added to the array
+ * - `userModel` The model name of the User, defaults to Users.
+ * - `fields` The fields to use to identify a user by. Make sure `'token'` has
+ *    been added to the array
  * - `scope` Additional conditions to use when looking up and authenticating users,
- *    i.e. `array('User.is_active' => 1).`
- * - `recursive` The value of the recursive key passed to find(). Defaults to 0.
- * - `contain` Extra models to contain and store in session.
- * - `continue` Continue after trying token authentication or just throw the `unauthorized` exception.
+ *    i.e. `['Users.is_active' => 1].`
+ * - `contain` Extra models to contain.
+ * - `continue` Continue after trying token authentication or just throw the
+ *   `unauthorized` exception.
  * - `unauthorized` Exception name to throw or a status code as an integer.
  *
- * @var array
+ * @param \Cake\Controller\ComponentRegistry $registry The Component registry
+ *   used on this request.
+ * @param array $config Array of config to use.
+ * @throws Cake\Error\Exception
  */
-	public $settings = array(
-		'parameter' => '_token',
-		'header' => 'X-ApiToken',
+	public function __construct(ComponentRegistry $registry, $config) {
+		$this->_registry = $registry;
 
-		'userModel' => 'User',
-		'fields' => array(
-			'username' => 'username',
-			'password' => 'password',
-			'token' => 'token',
-		),
-		'scope' => array(),
-		'recursive' => 0,
-		'contain' => null,
+		$this->config([
+			'parameter' => '_token',
+			'header' => 'X-ApiToken',
+			'fields' => ['token' => 'token', 'password' => 'password'],
+			'continue' => false,
+			'unauthorized' => 'BadRequestException'
+		]);
 
-		'continue' => false,
-		'unauthorized' => 'BadRequestException'
-	);
+		$this->config($config);
 
-/**
- * Constructor
- *
- * @param ComponentCollection $collection The Component collection used on this request.
- * @param array $settings Array of settings to use.
- * @throws CakeException
- */
-	public function __construct(ComponentCollection $collection, $settings) {
-		parent::__construct($collection, $settings);
-		if (empty($this->settings['parameter']) && empty($this->settings['header'])) {
-			throw new CakeException(__d('authenticate', 'You need to specify token parameter and/or header'));
+		if (empty($this->_config['parameter']) &&
+			empty($this->_config['header'])
+		) {
+			throw new Exception(__d(
+				'authenticate',
+				'You need to specify token parameter and/or header'
+			));
 		}
 	}
 
 /**
  * Implemented because CakePHP forces you to.
  *
- * @param CakeRequest $request The request object.
- * @param CakeResponse $response response object.
+ * @param Request $request The request object.
+ * @param Response $response response object.
  * @return boolean Always false.
  */
-	public function authenticate(CakeRequest $request, CakeResponse $response) {
+	public function authenticate(Request $request, Response $response) {
 		return false;
 	}
 
 /**
  * If unauthenticated, try to authenticate and respond.
  *
- * @param CakeRequest $request The request object.
- * @param CakeResponse $response The response object.
+ * @param Request $request The request object.
+ * @param Response $response The response object.
  * @return boolean False on failure, user on success.
  * @throws HttpException or the one specified using $settings['unauthorized']
  */
-	public function unauthenticated(CakeRequest $request, CakeResponse $response) {
-		if ($this->settings['continue']) {
+	public function unauthenticated(Request $request, Response $response) {
+		if ($this->_config['continue']) {
 			return false;
 		}
-		if (is_string($this->settings['unauthorized'])) {
+		if (is_string($this->_config['unauthorized'])) {
 			// @codingStandardsIgnoreStart
-			throw new $this->settings['unauthorized'];
+			throw new $this->_config['unauthorized'];
 			// @codingStandardsIgnoreEnd
 		}
 		$message = __d('authenticate', 'You are not authenticated.');
-		throw new HttpException($message, $this->settings['unauthorized']);
+		throw new HttpException($message, $this->_config['unauthorized']);
 	}
 
 /**
  * Get token information from the request.
  *
- * @param CakeRequest $request Request object.
+ * @param Request $request Request object.
  * @return mixed Either false or an array of user information
  */
-	public function getUser(CakeRequest $request) {
-		if (!empty($this->settings['header'])) {
-			$token = $request->header($this->settings['header']);
+	public function getUser(Request $request) {
+		if (!empty($this->_config['header'])) {
+			$token = $request->header($this->_config['header']);
 			if ($token) {
-				return $this->_findUser($token, null);
+				return $this->_findUser($token);
 			}
 		}
-		if (!empty($this->settings['parameter']) && !empty($request->query[$this->settings['parameter']])) {
-			$token = $request->query[$this->settings['parameter']];
+		if (!empty($this->_config['parameter']) &&
+			!empty($request->query[$this->_config['parameter']])
+		) {
+			$token = $request->query[$this->_config['parameter']];
 			return $this->_findUser($token);
 		}
 		return false;
@@ -138,28 +140,31 @@ class TokenAuthenticate extends BaseAuthenticate {
  * @return Mixed Either false on failure, or an array of user data.
  */
 	protected function _findUser($username, $password = null) {
-		$userModel = $this->settings['userModel'];
+		$userModel = $this->_config['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
-		$fields = $this->settings['fields'];
+		$fields = $this->_config['fields'];
 
-		$conditions = array(
-			$model . '.' . $fields['token'] => $username,
-		);
-		if (!empty($this->settings['scope'])) {
-			$conditions = array_merge($conditions, $this->settings['scope']);
+		$conditions = [$model . '.' . $fields['token'] => $username];
+		if (!empty($this->_config['scope'])) {
+			$conditions = array_merge($conditions, $this->_config['scope']);
 		}
-		$result = ClassRegistry::init($userModel)->find('first', array(
-			'conditions' => $conditions,
-			'recursive' => (int)$this->settings['recursive'],
-			'contain' => $this->settings['contain'],
-		));
-		if (empty($result) || empty($result[$model])) {
+		$table = TableRegistry::get($userModel)->find('all');
+		if ($this->_config['contain']) {
+			$table = $table->contain($contain);
+		}
+
+		$result = $table
+					->where($conditions)
+					->hydrate(false)
+					->first();
+
+		if (empty($result)) {
 			return false;
 		}
-		$user = $result[$model];
-		unset($user[$fields['password']]);
-		unset($result[$model]);
-		return array_merge($user, $result);
+
+		unset($result[$fields['password']]);
+
+		return $result;
 	}
 
 }
