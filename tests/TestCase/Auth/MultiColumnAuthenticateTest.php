@@ -1,21 +1,22 @@
 <?php
 namespace FOC\Authenticate\Auth\Test\TestCase\Auth;
 
+use Cake\Datasource\ConnectionManager;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
+use Cake\Utility\Time;
 use FOC\Authenticate\Auth\MultiColumnAuthenticate;
 
 /**
  * Test case for FormAuthentication
- *
- * @package       Cake.Test.Case.Controller.Component.Auth
  */
 class MultiColumnAuthenticateTest extends TestCase {
 
-	public $fixtures = array('plugin.authenticate.multi_user');
+	public $fixtures = ['plugin.FOC\Authenticate.multi_user'];
 
 /**
  * setup
@@ -24,16 +25,19 @@ class MultiColumnAuthenticateTest extends TestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		$this->Collection = $this->getMock('ComponentCollection');
-		$this->auth = new MultiColumnAuthenticate($this->Collection, array(
-			'fields' => array('username' => 'user', 'password' => 'password'),
-			'userModel' => 'MultiUser',
-			'columns' => array('user', 'email')
-		));
-		$password = Security::hash('password', null, true);
-		$User = ClassRegistry::init('MultiUser');
-		$User->updateAll(array('password' => $User->getDataSource()->value($password)));
-		$this->response = $this->getMock('CakeResponse');
+
+		$this->Registry = $this->getMock('Cake\Controller\ComponentRegistry');
+		$this->auth = new MultiColumnAuthenticate($this->Registry, [
+			'fields' => ['username' => 'user', 'password' => 'password'],
+			'userModel' => 'MultiUsers',
+			'columns' => ['user', 'email']
+		]);
+
+		$password = password_hash('password', PASSWORD_DEFAULT);
+		$MultiUsers = TableRegistry::get('MultiUsers');
+		$MultiUsers->updateAll(['password' => $password], []);
+
+		$this->response = $this->getMock('Cake\Network\Response');
 	}
 
 /**
@@ -42,27 +46,27 @@ class MultiColumnAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateEmailOrUsername() {
-		$request = new CakeRequest('posts/index', false);
+		$request = new Request('posts/index');
 		$expected = array(
 			'id' => 1,
 			'user' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
-			'created' => '2007-03-17 01:16:23',
-			'updated' => '2007-03-17 01:18:31'
+			'created' => new Time('2007-03-17 01:16:23'),
+			'updated' => new Time('2007-03-17 01:18:31')
 		);
 
-		$request->data = array('MultiUser' => array(
+		$request->data = [
 			'user' => 'mariano',
 			'password' => 'password'
-		));
+		];
 		$result = $this->auth->authenticate($request, $this->response);
 		$this->assertEquals($expected, $result);
 
-		$request->data = array('MultiUser' => array(
+		$request->data = [
 			'user' => 'mariano@example.com',
 			'password' => 'password'
-		));
+		];
 		$result = $this->auth->authenticate($request, $this->response);
 		$this->assertEquals($expected, $result);
 	}
@@ -73,8 +77,8 @@ class MultiColumnAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateNoData() {
-		$request = new CakeRequest('posts/index', false);
-		$request->data = array();
+		$request = new Request('posts/index');
+		$request->data = [];
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
@@ -84,8 +88,8 @@ class MultiColumnAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateNoUsername() {
-		$request = new CakeRequest('posts/index', false);
-		$request->data = array('MultiUser' => array('password' => 'foobar'));
+		$request = new Request('posts/index');
+		$request->data = ['password' => 'foobar'];
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
@@ -95,11 +99,11 @@ class MultiColumnAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateNoPassword() {
-		$request = new CakeRequest('posts/index', false);
-		$request->data = array('MultiUser' => array('user' => 'mariano'));
+		$request = new Request('posts/index');
+		$request->data = ['user' => 'mariano'];
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 
-		$request->data = array('MultiUser' => array('user' => 'mariano@example.com'));
+		$request->data = ['user' => 'mariano@example.com'];
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
@@ -109,12 +113,11 @@ class MultiColumnAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateInjection() {
-		$request = new CakeRequest('posts/index', false);
-		$request->data = array(
-			'MultiUser' => array(
-				'user' => '> 1',
-				'password' => "' OR 1 = 1"
-		));
+		$request = new Request('posts/index');
+		$request->data = [
+			'user' => '> 1',
+			'password' => "' OR 1 = 1"
+		];
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}
 
@@ -124,12 +127,12 @@ class MultiColumnAuthenticateTest extends TestCase {
  * @return void
  */
 	public function testAuthenticateScopeFail() {
-		$this->auth->settings['scope'] = array('user' => 'nate');
-		$request = new CakeRequest('posts/index', false);
-		$request->data = array('User' => array(
+		$this->auth->config('scope', ['user' => 'nate']);
+		$request = new Request('posts/index');
+		$request->data = [
 			'user' => 'mariano',
 			'password' => 'password'
-		));
+		];
 
 		$this->assertFalse($this->auth->authenticate($request, $this->response));
 	}

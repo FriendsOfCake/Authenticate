@@ -2,25 +2,27 @@
 namespace FOC\Authenticate\Auth;
 
 use Cake\Auth\FormAuthenticate;
+use Cake\Controller\ComponentRegistry;
+use Cake\ORM\TableRegistry;
 
 /**
  * An authentication adapter for AuthComponent
  *
- * Provides the ability to authenticate using POST data. The username form input can be checked against multiple table
- * columns, for instance username and email
+ * Provides the ability to authenticate using POST data. The username form input
+ * can be checked against multiple table columns, for instance username and email
  *
  * {{{
- *	$this->Auth->authenticate = array(
- *		'Authenticate.MultiColumn' => array(
- *			'fields' => array(
+ *	$this->Auth->config('authenticate', [
+ *		'Authenticate.MultiColumn' => [
+ *			'fields' => [
  *				'username' => 'username',
  *				'password' => 'password'
- *	 		),
- *			'columns' => array('username', 'email'),
- *			'userModel' => 'User',
- *			'scope' => array('User.active' => 1)
+ *	 		],
+ *			'columns' => ['username', 'email'],
+ *			'userModel' => 'Users',
+ *			'scope' => ['User.active' => 1]
  *		)
- *	)
+ *	]);
  * }}}
  *
  * Licensed under The MIT License
@@ -29,62 +31,77 @@ use Cake\Auth\FormAuthenticate;
 class MultiColumnAuthenticate extends FormAuthenticate {
 
 /**
- * Settings for this object.
+ * Constructor
  *
- * - `fields` The fields to use to identify a user by.
- * - 'columns' array of columns to check username form input against
- * - `userModel` The model name of the User, defaults to User.
- * - `scope` Additional conditions to use when looking up and authenticating users,
- *    i.e. `array('User.is_active' => 1).`
+ * Besides the keys specified in BaseAuthenticate::$_defaultConfig,
+ * MultiColumnAuthenticate uses the following extra keys:
  *
- * @var array
+ * - 'columns' Array of columns to check username form input against
+ *
+ * @param \Cake\Controller\ComponentRegistry $registry The Component registry
+ *   used on this request.
+ * @param array $config Array of config to use.
  */
-	public $settings = array(
-		'fields' => array(
-			'username' => 'username',
-			'password' => 'password'
-		),
-		'columns' => array(),
-		'userModel' => 'User',
-		'scope' => array(),
-		'contain' => null
-	);
+	public function __construct(ComponentRegistry $registry, $config) {
+		$this->_registry = $registry;
+
+		$this->config([
+			'columns' => [],
+		]);
+
+		$this->config($config);
+	}
 
 /**
  * Find a user record using the standard options.
  *
  * @param string $username The username/identifier.
- * @param string $password The unhashed password.
- * @return Mixed Either false on failure, or an array of user data.
+ * @param string $password The password, if not provide password checking is
+ *   skipped and result of find is returned.
+ * @return bool|array Either false on failure, or an array of user data.
  */
 	protected function _findUser($username, $password = null) {
-		$userModel = $this->settings['userModel'];
+		$userModel = $this->_config['userModel'];
 		list($plugin, $model) = pluginSplit($userModel);
-		$fields = $this->settings['fields'];
-		$conditions = array($model . '.' . $fields['username'] => $username);
-		if ($this->settings['columns'] && is_array($this->settings['columns'])) {
-			$columns = array();
-			foreach ($this->settings['columns'] as $column) {
-				$columns[] = array($model . '.' . $column => $username);
-			}
-			$conditions = array('OR' => $columns);
+		$fields = $this->_config['fields'];
+		$conditions = [$model . '.' . $fields['username'] => $username];
+
+		$columns = [];
+		foreach ($this->_config['columns'] as $column) {
+			$columns[] = [$model . '.' . $column => $username];
 		}
-		$conditions = array_merge($conditions, array($model . '.' . $fields['password'] => $this->_password($password)));
-		if (!empty($this->settings['scope'])) {
-			$conditions = array_merge($conditions, $this->settings['scope']);
+		$conditions = ['OR' => $columns];
+
+		if (!empty($this->_config['scope'])) {
+			$conditions = array_merge($conditions, $this->_config['scope']);
 		}
-		$result = ClassRegistry::init($userModel)->find('first', array(
-			'conditions' => $conditions,
-			'recursive' => 0,
-			'contain' => $this->settings['contain'],
-		));
-		if (empty($result) || empty($result[$model])) {
+
+		$table = TableRegistry::get($userModel)->find('all');
+		if ($this->_config['contain']) {
+			$table = $table->contain($contain);
+		}
+
+		$result = $table
+					->where($conditions)
+					->hydrate(false)
+					->first();
+
+		if (empty($result)) {
 			return false;
 		}
-		$user = $result[$model];
-		unset($user[$fields['password']]);
-		unset($result[$model]);
-		return array_merge($user, $result);
+
+		if ($password !== null) {
+			$hasher = $this->passwordHasher();
+			$hashedPassword = $result[$fields['password']];
+			if (!$hasher->check($password, $hashedPassword)) {
+				return false;
+			}
+
+			$this->_needsPasswordRehash = $hasher->needsRehash($hashedPassword);
+			unset($result[$fields['password']]);
+		}
+
+		return $result;
 	}
 
 }

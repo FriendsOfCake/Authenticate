@@ -1,16 +1,9 @@
 <?php
-namespace FOC\Authenticate\Auth\Test\Fixture;
+namespace FOC\Authenticate\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
 class MultiUserFixture extends TestFixture {
-
-/**
- * name property
- *
- * @var string 'MultiUser'
- */
-	public $name = 'MultiUser';
 
 /**
  * fields property
@@ -18,13 +11,14 @@ class MultiUserFixture extends TestFixture {
  * @var array
  */
 	public $fields = array(
-		'id' => array('type' => 'integer', 'key' => 'primary'),
+		'id' => array('type' => 'integer'),
 		'user' => array('type' => 'string', 'null' => false),
 		'email' => array('type' => 'string', 'null' => false),
 		'password' => array('type' => 'string', 'null' => false),
 		'token' => array('type' => 'string', 'null' => false),
 		'created' => 'datetime',
-		'updated' => 'datetime'
+		'updated' => 'datetime',
+		'_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
 	);
 
 /**
@@ -38,6 +32,5 @@ class MultiUserFixture extends TestFixture {
 		array('user' => 'larry', 'email' => 'larry@example.com', 'password' => '5f4dcc3b5aa765d61d8327deb882cf99', 'token' => '34567', 'created' => '2007-03-17 01:20:23', 'updated' => '2007-03-17 01:22:31'),
 		array('user' => 'garrett', 'email' => 'garrett@example.com', 'password' => '5f4dcc3b5aa765d61d8327deb882cf99', 'token' => '45678', 'created' => '2007-03-17 01:22:23', 'updated' => '2007-03-17 01:24:31'),
 		array('user' => 'chartjes', 'email' => 'chartjes@example.com', 'password' => '5f4dcc3b5aa765d61d8327deb882cf99', 'token' => '56789', 'created' => '2007-03-17 01:22:23', 'updated' => '2007-03-17 01:24:31'),
-
 	);
 }
