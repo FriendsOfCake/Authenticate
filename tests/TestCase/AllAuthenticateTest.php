@@ -1,12 +1,12 @@
 <?php
 namespace FOC\Authenticate\Auth\Test\TestCase;
 
+use Cake\Core\Plugin;
 use Cake\TestSuite\TestCase;
+use Cake\TestSuite\TestSuite;
 
 /**
  * All Authenticate plugin tests
- *
- * @package       Cake.Test.Case.Controller.Component.Auth
  */
 class AllAuthenticateTest extends TestCase {
 
@@ -16,9 +16,9 @@ class AllAuthenticateTest extends TestCase {
  * @return void
  */
 	public static function suite() {
-		$suite = new CakeTestSuite('All Authenticate test');
+		$suite = new TestSuite('All Authenticate test');
 
-		$path = CakePlugin::path('Authenticate') . 'Test' . DS . 'Case' . DS;
+		$path = Plugin::path('FOC/Authenticate') . 'tests' . DS . 'TestCase' . DS;
 		$suite->addTestDirectoryRecursive($path);
 
 		return $suite;
