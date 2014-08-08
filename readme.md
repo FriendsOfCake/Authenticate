@@ -57,8 +57,8 @@ Setup the authentication class settings
             'fields' => [
                 'username' => 'login',
                 'password' => 'password'
-            ),
-            'columns' => ['username', 'email'),
+            ],
+            'columns' => ['username', 'email'],
             'userModel' => 'Users',
             'scope' => ['Users.active' => 1]
         )
@@ -120,10 +120,10 @@ It will first try to read the cookie, if that fails will try with form data:
                     'columns' => ['username', 'email'],
                     'userModel' => 'Users',
                     'scope' => ['Users.active' => 1]
-                )
-            )
-        )
-    );
+                ]
+            ]
+        ]
+    ];
 ```
 
 ### Setting the cookie
@@ -189,7 +189,7 @@ class UsersController extends AppController {
                 ]
             ]
         ]
-    );
+    ];
     //Or in beforeFilter()
     $this->Auth->config('authenticate', [
         'FOC/Authenticate.Token' => [
