@@ -39,7 +39,7 @@ class CookieAuthenticateTest extends TestCase {
 		$this->Registry->load('Session');
 		$this->Registry->load('Auth');
 		$this->auth = new CookieAuthenticate($this->Registry, [
-			'fields' => ['username' => 'user', 'password' => 'password'],
+			'fields' => ['username' => 'user_name', 'password' => 'password'],
 			'userModel' => 'MultiUsers',
 		]);
 
@@ -66,7 +66,7 @@ class CookieAuthenticateTest extends TestCase {
 	public function testAuthenticate() {
 		$expected = array(
 			'id' => 1,
-			'user' => 'mariano',
+			'user_name' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
 			'created' => new Time('2007-03-17 01:16:23'),
@@ -78,7 +78,7 @@ class CookieAuthenticateTest extends TestCase {
 
 		$this->Registry->Cookie->write(
 			'RememberMe',
-			array('user' => 'mariano', 'password' => 'password')
+			array('user_name' => 'mariano', 'password' => 'password')
 		);
 		$result = $this->auth->authenticate($this->request, $this->response);
 		$this->assertEquals($expected, $result);

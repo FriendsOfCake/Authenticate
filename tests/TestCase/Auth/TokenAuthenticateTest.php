@@ -28,7 +28,7 @@ class TokenAuthenticateTest extends TestCase {
 		$this->Registry = $this->getMock('Cake\Controller\ComponentRegistry');
 		$this->auth = new TokenAuthenticate($this->Registry, [
 			'fields' => [
-				'username' => 'user',
+				'username' => 'user_name',
 				'password' => 'password',
 				'token' => 'token'
 			],
@@ -56,7 +56,7 @@ class TokenAuthenticateTest extends TestCase {
 
 		$expected = array(
 			'id' => 1,
-			'user' => 'mariano',
+			'user_name' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
 			'created' => new Time('2007-03-17 01:16:23'),
@@ -82,7 +82,7 @@ class TokenAuthenticateTest extends TestCase {
 
 		$expected = array(
 			'id' => 1,
-			'user' => 'mariano',
+			'user_name' => 'mariano',
 			'email' => 'mariano@example.com',
 			'token' => '12345',
 			'created' => new Time('2007-03-17 01:16:23'),
