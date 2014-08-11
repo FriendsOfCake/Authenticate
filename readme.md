@@ -49,15 +49,28 @@ In your plugin directory type
 
 In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
 
+## Database table minimum
+username	string
+
+password	string
+
+active		integer
+
+
+## Known source of trouble
+
+http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
+
 ## Configuration:
 
-Setup the authentication class settings
+Setup the authentication class settings in your AppController.php
 
 ### MultiColumnAuthenticate:
 
 ```php
     //in $components
     public $components = array(
+    	// your other components
         'Auth' => array(
             'authenticate' => array(
                 'Authenticate.MultiColumn' => array(
@@ -91,6 +104,8 @@ Setup the authentication class settings
 ```php
     //in $components
     public $components = array(
+    	// your other components
+    	'Cookie',
         'Auth' => array(
             'authenticate' => array(
                 'Authenticate.Cookie' => array(
@@ -123,6 +138,8 @@ It will first try to read the cookie, if that fails will try with form data:
 ```php
     //in $components
     public $components = array(
+    	// your other components
+    	'Cookie',
         'Auth' => array(
             'authenticate' => array(
                 'Authenticate.Cookie' => array(
