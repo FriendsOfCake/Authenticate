@@ -75,7 +75,7 @@ Setup the authentication class settings in your AppController.php
             'authenticate' => array(
                 'Authenticate.MultiColumn' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
                     'columns' => array('username', 'email'),
@@ -89,7 +89,7 @@ Setup the authentication class settings in your AppController.php
     $this->Auth->authenticate = array(
         'Authenticate.MultiColumn' => array(
             'fields' => array(
-                'username' => 'login',
+                'username' => 'username',
                 'password' => 'password'
             ),
             'columns' => array('username', 'email'),
@@ -110,7 +110,7 @@ Setup the authentication class settings in your AppController.php
             'authenticate' => array(
                 'Authenticate.Cookie' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
                     'userModel' => 'SomePlugin.User',
@@ -123,7 +123,7 @@ Setup the authentication class settings in your AppController.php
     $this->Auth->authenticate = array(
         'Authenticate.Cookie' => array(
             'fields' => array(
-                'username' => 'login',
+                'username' => 'username',
                 'password' => 'password'
             ),
             'userModel' => 'SomePlugin.User',
@@ -144,7 +144,7 @@ It will first try to read the cookie, if that fails will try with form data:
             'authenticate' => array(
                 'Authenticate.Cookie' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
                     'userModel' => 'SomePlugin.User',
@@ -152,7 +152,7 @@ It will first try to read the cookie, if that fails will try with form data:
                 ),
                 'Authenticate.MultiColumn' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
                     'columns' => array('username', 'email'),
