@@ -50,11 +50,11 @@ In your plugin directory type
 In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
 
 ## Database table minimum
-username	string
+username	-	string
 
-password	string
+password	-	string
 
-active		integer
+active		-	integer
 
 
 ## Known source of trouble
