@@ -198,7 +198,6 @@ class UsersController extends AppController {
 
 	public function logout() {
 		$this->Auth->logout();
-		$this->Cookie->delete('User');
 		$this->Session->setFlash('Logged out');
 		$this->redirect($this->Auth->redirect('/'));
 	}
