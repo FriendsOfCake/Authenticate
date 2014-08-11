@@ -121,7 +121,7 @@ class CookieAuthenticate extends BaseAuthenticate {
  * @param array $user User record
  * @return void
  */
-	public function logout($user) {
+	public function logout(array $user) {
 		$this->_registry->Cookie->delete($this->_config['cookie']['name']);
 	}
 
