@@ -49,16 +49,24 @@ In your plugin directory type
 
 In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
 
-## Database table minimum
-username	-	string
+## Requirements
 
-password	-	string
+If you start from scratch, you can follow the CakePHP Simple Authentication Tutorial and afterwards include this plugin.
 
-active		-	integer		-	(1 is active)
+http://book.cakephp.org/2.0/en/tutorials-and-examples/blog-auth-example/auth.html
+
+### Form
+
+A checkbox named remember_me to give the user the opportunity to write his credentials into a cookie.
+
+### Database
+
+A field named active (integer), which provides the possibility to let a user access (if value is 1) or not (all other values).
 
 ## Known source of trouble
 
 Some browser don't accept cookies from localhost. To avoid troubles use a different browser or go online. Furhter informations can be found here:
+
 http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
 
 ## Configuration:
