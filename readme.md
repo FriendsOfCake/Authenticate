@@ -54,11 +54,11 @@ username	-	string
 
 password	-	string
 
-active		-	integer
-
+active		-	integer		-	(1 is active)
 
 ## Known source of trouble
 
+Some browser don't accept cookies from localhost. To avoid troubles use a different browser or go online. Furhter informations can be found here:
 http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
 
 ## Configuration:
@@ -113,7 +113,7 @@ Setup the authentication class settings in your AppController.php
                         'username' => 'username',
                         'password' => 'password'
                     ),
-                    'userModel' => 'SomePlugin.User',
+                    'userModel' => 'User',
                     'scope' => array('User.active' => 1)
                 )
             )
@@ -126,7 +126,7 @@ Setup the authentication class settings in your AppController.php
                 'username' => 'username',
                 'password' => 'password'
             ),
-            'userModel' => 'SomePlugin.User',
+            'userModel' => 'User',
             'scope' => array('User.active' => 1)
         )
     );
@@ -147,7 +147,7 @@ It will first try to read the cookie, if that fails will try with form data:
                         'username' => 'username',
                         'password' => 'password'
                     ),
-                    'userModel' => 'SomePlugin.User',
+                    'userModel' => 'User',
                     'scope' => array('User.active' => 1)
                 ),
                 'Authenticate.MultiColumn' => array(
