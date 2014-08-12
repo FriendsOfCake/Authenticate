@@ -25,7 +25,7 @@ application's `composer.json`.
 
 ## Usage
 
-In your app's `config/bootstrap.php` add: `CakePlugin::load('FOC/Authenticate')`;
+In your app's `config/bootstrap.php` add: `CakePlugin::load('FOC\Authenticate')`;
 
 ## Configuration:
 
@@ -38,7 +38,7 @@ Setup the authentication class settings
     public $components = [
         'Auth' => [
             'authenticate' => [
-                'FOC/Authenticate.MultiColumn' => [
+                'FOC\Authenticate.MultiColumn' => [
                     'fields' => [
                         'username' => 'login',
                         'password' => 'password'
@@ -53,7 +53,7 @@ Setup the authentication class settings
 
     // Or in beforeFilter()
     $this->Auth->config('authenticate', [
-        'FOC/Authenticate.MultiColumn' => [
+        'FOC\Authenticate.MultiColumn' => [
             'fields' => [
                 'username' => 'login',
                 'password' => 'password'
@@ -72,7 +72,7 @@ Setup the authentication class settings
     public $components = [
         'Auth' => [
             'authenticate' => [
-                'FOC/Authenticate.Cookie' => [
+                'FOC\Authenticate.Cookie' => [
                     'fields' => [
                         'username' => 'login',
                         'password' => 'password'
@@ -85,7 +85,7 @@ Setup the authentication class settings
     );
     //Or in beforeFilter()
     $this->Auth->authenticate = [
-        'FOC/Authenticate.Cookie' => [
+        'FOC\Authenticate.Cookie' => [
             'fields' => [
                 'username' => 'login',
                 'password' => 'password'
@@ -104,7 +104,7 @@ It will first try to read the cookie, if that fails will try with form data:
     public $components = [
         'Auth' => [
             'authenticate' => [
-                'FOC/Authenticate.Cookie' => [
+                'FOC\Authenticate.Cookie' => [
                     'fields' => [
                         'username' => 'login',
                         'password' => 'password'
@@ -112,7 +112,7 @@ It will first try to read the cookie, if that fails will try with form data:
                     'userModel' => 'SomePlugin.Users',
                     'scope' => ['User.active' => 1]
                 ],
-                'FOC/Authenticate.MultiColumn' => [
+                'FOC\Authenticate.MultiColumn' => [
                     'fields' => [
                         'username' => 'login',
                         'password' => 'password'
@@ -175,7 +175,7 @@ class UsersController extends AppController {
     public $components = [
         'Auth' => [
             'authenticate' => [
-                'FOC/Authenticate.Token' => [
+                'FOC\Authenticate.Token' => [
                     'parameter' => '_token',
                     'header' => 'X-MyApiTokenHeader',
                     'userModel' => 'Users',
@@ -192,7 +192,7 @@ class UsersController extends AppController {
     ];
     //Or in beforeFilter()
     $this->Auth->config('authenticate', [
-        'FOC/Authenticate.Token' => [
+        'FOC\Authenticate.Token' => [
             'parameter' => '_token',
             'header' => 'X-MyApiTokenHeader',
             'userModel' => 'Users',

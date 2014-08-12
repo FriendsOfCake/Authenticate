@@ -99,4 +99,4 @@ Log::config([
 	]
 ]);
 
-Plugin::load('FOC/Authenticate', ['path' => ROOT]);
+Plugin::load('FOC\Authenticate', ['path' => ROOT]);
