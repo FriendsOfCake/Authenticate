@@ -18,7 +18,7 @@ class AllAuthenticateTest extends TestCase {
 	public static function suite() {
 		$suite = new TestSuite('All Authenticate test');
 
-		$path = Plugin::path('FOC\Authenticate') . 'tests' . DS . 'TestCase' . DS;
+		$path = Plugin::path('FOC/Authenticate') . 'tests' . DS . 'TestCase' . DS;
 		$suite->addTestDirectoryRecursive($path);
 
 		return $suite;
