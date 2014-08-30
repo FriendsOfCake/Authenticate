@@ -26,7 +26,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "composer/installers": "*"
+        "cakephp/plugin-installer": "dev-master"
     },
     "require-dev": {
         "cakephp/cakephp": "3.0.*-dev",
@@ -34,7 +34,11 @@
     },
     "autoload": {
         "psr-4": {
-            "FOC\\Authenticate\\": "src",
+            "FOC\\Authenticate\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "FOC\\Authenticate\\Test\\": "tests"
         }
     },
