@@ -27,7 +27,8 @@
     "require": {
         "php": ">=5.4.0",
         "cakephp/cakephp": "3.0.*-dev",
-        "cakephp/plugin-installer": "dev-master"
+        "cakephp/plugin-installer": "dev-master",
+        "firebase/php-jwt": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*"
