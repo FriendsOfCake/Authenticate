@@ -4,7 +4,6 @@ namespace FOC\Authenticate\Auth;
 use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\CookieComponent;
-use Cake\Error\Exception;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\Routing\Router;
@@ -50,10 +49,9 @@ class CookieAuthenticate extends BaseAuthenticate {
 		$this->config([
 			'cookie' => [
 				'name' => 'RememberMe',
-				'expires' => '+2 weeks',
-				'base' => Router::getRequest()->base
+				'expires' => '+2 weeks'
 			],
-			'crypt' => ''
+			'crypt' => 'aes'
 		]);
 
 		$this->config($config);
@@ -68,13 +66,13 @@ class CookieAuthenticate extends BaseAuthenticate {
  *
  * @param Request $request The unused request object
  * @return mixed False on login failure. An array of User data on success.
- * @throws Cake\Error\Exception
+ * @throws \RuntimeException
  */
 	public function getUser(Request $request) {
 		if (!isset($this->_registry->Cookie) ||
 			!$this->_registry->Cookie instanceof CookieComponent
 		) {
-			throw new Exception('CookieComponent is not loaded');
+			throw new \RuntimeException('CookieComponent is not loaded');
 		}
 
 		$cookieConfig = $this->_config['cookie'];
