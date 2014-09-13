@@ -5,13 +5,14 @@ use Cake\Auth\BasicAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Controller;
 use Cake\Core\Configure;
+use Cake\I18n\Time;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Time;
+use Cake\Utility\Security;
 use FOC\Authenticate\Auth\CookieAuthenticate;
 
 /**
@@ -33,7 +34,7 @@ class CookieAuthenticateTest extends TestCase {
 		Router::setRequestInfo($this->request);
 		$this->response = $this->getMock('Cake\Network\Response');
 
-		Configure::write('Security.salt', 'somerandomhaskeysomerandomhaskey');
+		Security::salt('somerandomhaskeysomerandomhaskey');
 		$this->Registry = new ComponentRegistry(new Controller($this->request, $this->response));
 		$this->Registry->load('Cookie');
 		$this->Registry->load('Session');
