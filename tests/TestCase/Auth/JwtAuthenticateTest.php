@@ -82,12 +82,12 @@ class JwtAuthenticateTest extends TestCase {
 			'created' => new Time('2007-03-17 01:16:23'),
 			'updated' => new Time('2007-03-17 01:18:31')
 		);
-		$request->env('HTTP_BEARER', $this->token);
+		$request->env('HTTP_AUTHORIZATION', 'Bearer ' . $this->token);
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);
 
 		$this->setExpectedException('UnexpectedValueException');
-		$request->env('HTTP_BEARER', '66666');
+		$request->env('HTTP_AUTHORIZATION', 'Bearer foobar');
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertFalse($result);
 	}
@@ -105,7 +105,10 @@ class JwtAuthenticateTest extends TestCase {
 			'username' => 'ADmad',
 			'group' => ['name' => 'admin']
 		];
-		$request->env('HTTP_BEARER', JWT::encode(['record' => $expected], Security::salt()));
+		$request->env(
+			'HTTP_AUTHORIZATION',
+			'Bearer ' . JWT::encode(['record' => $expected], Security::salt())
+		);
 		$result = $this->auth->getUser($request, $this->response);
 		$this->assertEquals($expected, $result);
 	}

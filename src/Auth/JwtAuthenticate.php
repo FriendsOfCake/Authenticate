@@ -38,8 +38,9 @@ class JwtAuthenticate extends BaseAuthenticate {
  * Settings for this object.
  *
  * - `parameter` - The url parameter name of the token. Defaults to `_token`.
- *   First $_SERVER['HTTP_BEARER'] is checked for token value. If empty this
- *   query string paramater is checked.
+ *   First $_SERVER['HTTP_AUTHORIZATION'] is checked for token value.
+ *   It's value should be of form "Bearer <token>". If empty this query string
+ *   paramater is checked.
  * - `userModel` - The model name of the User, defaults to `Users`.
  * - `fields` - Has key `id` whose value contains primary key field name.
  *   Defaults to ['id' => 'id'].
@@ -82,9 +83,12 @@ class JwtAuthenticate extends BaseAuthenticate {
  * @return bool|array Either false or an array of user information
  */
 	public function getUser(Request $request) {
-		$token = $request->env('HTTP_BEARER');
+		$token = $request->env('HTTP_AUTHORIZATION');
 		if ($token) {
-			return $this->_findUser($token);
+			$token = explode(' ', $token);
+			if (!empty($token[1])) {
+				return $this->_findUser($token[1]);
+			}
 		}
 
 		if (!empty($this->_config['parameter']) &&
