@@ -1,8 +1,8 @@
 <?php
 namespace FOC\Authenticate\Auth\Test\TestCase\Auth;
 
-use Cake\Datasource\ConnectionManager;
 use Cake\Controller\Component\AuthComponent;
+use Cake\Datasource\ConnectionManager;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\Table;
@@ -16,7 +16,7 @@ use FOC\Authenticate\Auth\MultiColumnAuthenticate;
  */
 class MultiColumnAuthenticateTest extends TestCase {
 
-	public $fixtures = ['plugin.FOC\Authenticate.multi_user'];
+	public $fixtures = ['plugin.FOC\Authenticate.multi_users'];
 
 /**
  * setup

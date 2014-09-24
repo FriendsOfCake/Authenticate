@@ -3,7 +3,7 @@ namespace FOC\Authenticate\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
 
-class MultiUserFixture extends TestFixture {
+class MultiUsersFixture extends TestFixture {
 
 /**
  * fields property

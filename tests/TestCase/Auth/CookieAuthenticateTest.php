@@ -20,7 +20,7 @@ use FOC\Authenticate\Auth\CookieAuthenticate;
  */
 class CookieAuthenticateTest extends TestCase {
 
-	public $fixtures = ['plugin.FOC\Authenticate.multi_user'];
+	public $fixtures = ['plugin.FOC\Authenticate.multi_users'];
 
 /**
  * setup

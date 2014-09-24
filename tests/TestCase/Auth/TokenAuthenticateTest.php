@@ -1,8 +1,8 @@
 <?php
 namespace FOC\Authenticate\Auth\Test\TestCase\Auth;
 
-use Cake\Controller\Controller;
 use Cake\Controller\Component\AuthComponent;
+use Cake\Controller\Controller;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
@@ -15,7 +15,7 @@ use FOC\Authenticate\Auth\TokenAuthenticate;
  */
 class TokenAuthenticateTest extends TestCase {
 
-	public $fixtures = ['plugin.FOC\Authenticate.multi_user'];
+	public $fixtures = ['plugin.FOC\Authenticate.multi_users'];
 
 /**
  * setup
