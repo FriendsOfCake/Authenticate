@@ -25,7 +25,7 @@ application's `composer.json`.
 
 ## Usage
 
-In your app's `config/bootstrap.php` add: `CakePlugin::load('FOC/Authenticate')`;
+In your app's `config/bootstrap.php` add: `Plugin::load('FOC/Authenticate')`;
 
 ## Configuration:
 
