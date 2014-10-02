@@ -27,7 +27,7 @@
     "require": {
         "php": ">=5.4.0",
         "cakephp/cakephp": "3.0.*-dev",
-        "cakephp/plugin-installer": "dev-master"
+        "cakephp/plugin-installer": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "4.1.*"
@@ -41,8 +41,5 @@
         "psr-4": {
             "FOC\\Authenticate\\Test\\": "tests"
         }
-    },
-    "extra": {
-        "installer-name": "FOC/Authenticate"
     }
 }
