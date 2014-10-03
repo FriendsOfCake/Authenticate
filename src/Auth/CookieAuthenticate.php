@@ -107,7 +107,7 @@ class CookieAuthenticate extends BaseAuthenticate {
  *
  * @param Request $request Request object.
  * @param Response $response Response object.
- * @return array|boolean Array of user info on success, false on falure.
+ * @return array|bool Array of user info on success, false on falure.
  */
 	public function authenticate(Request $request, Response $response) {
 		return $this->getUser($request);

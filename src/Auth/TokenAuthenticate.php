@@ -83,7 +83,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  *
  * @param Request $request The request object.
  * @param Response $response response object.
- * @return boolean Always false.
+ * @return bool Always false.
  */
 	public function authenticate(Request $request, Response $response) {
 		return false;
@@ -94,7 +94,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  *
  * @param Request $request The request object.
  * @param Response $response The response object.
- * @return boolean False on failure, user on success.
+ * @return bool False on failure, user on success.
  * @throws HttpException or the one specified using $settings['unauthorized']
  */
 	public function unauthenticated(Request $request, Response $response) {
