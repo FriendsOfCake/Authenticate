@@ -21,7 +21,7 @@ use Cake\ORM\TableRegistry;
  *			'columns' => ['username', 'email'],
  *			'userModel' => 'Users',
  *			'scope' => ['User.active' => 1]
- *		)
+ *		]
  *	]);
  * }}}
  *
