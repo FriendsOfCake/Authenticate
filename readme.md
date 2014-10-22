@@ -46,10 +46,10 @@ Setup the authentication class settings
                     'columns' => ['username', 'email'],
                     'userModel' => 'Users',
                     'scope' => ['Users.active' => 1]
-                )
-            )
-        )
-    );
+                ]
+            ]
+        ]
+    ];
 
     // Or in beforeFilter()
     $this->Auth->config('authenticate', [
@@ -61,7 +61,7 @@ Setup the authentication class settings
             'columns' => ['username', 'email'],
             'userModel' => 'Users',
             'scope' => ['Users.active' => 1]
-        )
+        ]
     ]);
 ```
 
@@ -79,10 +79,10 @@ Setup the authentication class settings
                     ],
                     'userModel' => 'SomePlugin.Users',
                     'scope' => ['User.active' => 1]
-                )
-            )
-        )
-    );
+                ]
+            ]
+        ]
+    ];
     //Or in beforeFilter()
     $this->Auth->authenticate = [
         'FOC/Authenticate.Cookie' => [
@@ -92,8 +92,8 @@ Setup the authentication class settings
             ],
             'userModel' => 'SomePlugin.Users',
             'scope' => ['Users.active' => 1]
-        )
-    );
+        ]
+    ];
 ```
 
 ### Setup both:
