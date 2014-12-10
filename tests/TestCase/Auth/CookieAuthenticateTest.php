@@ -8,7 +8,6 @@ use Cake\Core\Configure;
 use Cake\I18n\Time;
 use Cake\Network\Request;
 use Cake\Network\Response;
-use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
@@ -37,7 +36,6 @@ class CookieAuthenticateTest extends TestCase {
 		Security::salt('somerandomhaskeysomerandomhaskey');
 		$this->Registry = new ComponentRegistry(new Controller($this->request, $this->response));
 		$this->Registry->load('Cookie');
-		$this->Registry->load('Session');
 		$this->Registry->load('Auth');
 		$this->auth = new CookieAuthenticate($this->Registry, [
 			'fields' => ['username' => 'user_name', 'password' => 'password'],
