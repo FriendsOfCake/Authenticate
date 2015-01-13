@@ -1,7 +1,6 @@
 <?php
 App::uses('BaseAuthenticate', 'Controller/Component/Auth');
 App::uses('AuthComponent', 'Controller/Component');
-App::uses('Router', 'Routing');
 
 /**
  * An authentication adapter for AuthComponent
@@ -18,10 +17,6 @@ App::uses('Router', 'Routing');
  *			'userModel' => 'User',
  *			'scope' => array('User.active' => 1),
  *			'crypt' => 'rijndael', // Defaults to rijndael(safest), optionally set to 'cipher' if required
- *			'cookie' => array(
- *				'name' => 'RememberMe',
- *				'time' => '+2 weeks',
- *			)
  *		)
  *	)
  * }}}
@@ -38,11 +33,6 @@ class CookieAuthenticate extends BaseAuthenticate {
  * @param array $settings Settings
  */
 	public function __construct(ComponentCollection $collection, $settings) {
-		$this->settings['cookie'] = array(
-			'name' => 'RememberMe',
-			'time' => '+2 weeks',
-			'base' => Router::getRequest()->base
-		);
 		$this->settings['crypt'] = 'rijndael';
 		parent::__construct($collection, $settings);
 	}
