@@ -150,7 +150,7 @@ class TokenAuthenticate extends BaseAuthenticate {
 		}
 		$table = TableRegistry::get($userModel)->find('all');
 		if ($this->_config['contain']) {
-			$table = $table->contain($contain);
+			$table = $table->contain($this->_config['contain']);
 		}
 
 		$result = $table
