@@ -63,7 +63,7 @@ class TokenAuthenticate extends BaseAuthenticate {
 			'header' => 'X-ApiToken',
 			'fields' => ['token' => 'token', 'password' => 'password'],
 			'continue' => false,
-			'unauthorized' => 'BadRequestException'
+			'unauthorized' => 'Cake\Network\Exception\BadRequestException'
 		]);
 
 		$this->config($config);
