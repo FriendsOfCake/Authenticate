@@ -7,7 +7,7 @@ use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Time;
+use Cake\I18n\Time;
 use FOC\Authenticate\Auth\TokenAuthenticate;
 
 /**
