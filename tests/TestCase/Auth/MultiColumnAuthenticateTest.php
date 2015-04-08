@@ -3,12 +3,12 @@ namespace FOC\Authenticate\Auth\Test\TestCase\Auth;
 
 use Cake\Controller\Component\AuthComponent;
 use Cake\Datasource\ConnectionManager;
+use Cake\I18n\Time;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Time;
 use FOC\Authenticate\Auth\MultiColumnAuthenticate;
 
 /**

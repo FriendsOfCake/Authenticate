@@ -3,11 +3,11 @@ namespace FOC\Authenticate\Auth\Test\TestCase\Auth;
 
 use Cake\Controller\Component\AuthComponent;
 use Cake\Controller\Controller;
+use Cake\I18n\Time;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Time;
 use FOC\Authenticate\Auth\TokenAuthenticate;
 
 /**
