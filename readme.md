@@ -49,20 +49,41 @@ In your plugin directory type
 
 In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
 
+## Requirements
+
+If you start from scratch, you can follow the CakePHP Simple Authentication Tutorial and afterwards include this plugin.
+
+http://book.cakephp.org/2.0/en/tutorials-and-examples/blog-auth-example/auth.html
+
+### Form
+
+A checkbox named remember_me to give the user the opportunity to write his credentials into a cookie.
+
+### Database
+
+A field named active (integer), which provides the possibility to let a user access (if value is 1) or not (all other values).
+
+## Known source of trouble
+
+Some browser don't accept cookies from localhost. To avoid troubles use a different browser or go online. Furhter informations can be found here:
+
+http://stackoverflow.com/questions/1134290/cookies-on-localhost-with-explicit-domain
+
 ## Configuration:
 
-Setup the authentication class settings
+Setup the authentication class settings in your AppController.php
 
 ### MultiColumnAuthenticate:
 
 ```php
     //in $components
     public $components = array(
+    	// your other components
         'Auth' => array(
             'authenticate' => array(
                 'Authenticate.MultiColumn' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
                     'columns' => array('username', 'email'),
@@ -76,7 +97,7 @@ Setup the authentication class settings
     $this->Auth->authenticate = array(
         'Authenticate.MultiColumn' => array(
             'fields' => array(
-                'username' => 'login',
+                'username' => 'username',
                 'password' => 'password'
             ),
             'columns' => array('username', 'email'),
@@ -91,14 +112,16 @@ Setup the authentication class settings
 ```php
     //in $components
     public $components = array(
+    	// your other components
+    	'Cookie',
         'Auth' => array(
             'authenticate' => array(
                 'Authenticate.Cookie' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
-                    'userModel' => 'SomePlugin.User',
+                    'userModel' => 'User',
                     'scope' => array('User.active' => 1)
                 )
             )
@@ -108,10 +131,10 @@ Setup the authentication class settings
     $this->Auth->authenticate = array(
         'Authenticate.Cookie' => array(
             'fields' => array(
-                'username' => 'login',
+                'username' => 'username',
                 'password' => 'password'
             ),
-            'userModel' => 'SomePlugin.User',
+            'userModel' => 'User',
             'scope' => array('User.active' => 1)
         )
     );
@@ -123,19 +146,21 @@ It will first try to read the cookie, if that fails will try with form data:
 ```php
     //in $components
     public $components = array(
+    	// your other components
+    	'Cookie',
         'Auth' => array(
             'authenticate' => array(
                 'Authenticate.Cookie' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
-                    'userModel' => 'SomePlugin.User',
+                    'userModel' => 'User',
                     'scope' => array('User.active' => 1)
                 ),
                 'Authenticate.MultiColumn' => array(
                     'fields' => array(
-                        'username' => 'login',
+                        'username' => 'username',
                         'password' => 'password'
                     ),
                     'columns' => array('username', 'email'),
