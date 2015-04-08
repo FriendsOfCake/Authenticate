@@ -8,7 +8,7 @@ use Cake\Network\Response;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Cake\Utility\Time;
+use Cake\I18n\Time;
 use FOC\Authenticate\Auth\MultiColumnAuthenticate;
 
 /**
