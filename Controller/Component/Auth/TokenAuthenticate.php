@@ -81,7 +81,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  *
  * @param CakeRequest $request The request object.
  * @param CakeResponse $response response object.
- * @return boolean Always false.
+ * @return bool Always false.
  */
 	public function authenticate(CakeRequest $request, CakeResponse $response) {
 		return false;
@@ -92,7 +92,7 @@ class TokenAuthenticate extends BaseAuthenticate {
  *
  * @param CakeRequest $request The request object.
  * @param CakeResponse $response The response object.
- * @return boolean False on failure, user on success.
+ * @return bool False on failure, user on success.
  * @throws HttpException or the one specified using $settings['unauthorized']
  */
 	public function unauthenticated(CakeRequest $request, CakeResponse $response) {
