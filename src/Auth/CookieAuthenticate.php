@@ -13,7 +13,7 @@ use Cake\Routing\Router;
  *
  * Provides the ability to authenticate using COOKIE
  *
- * {{{
+ * ```
  *    $this->Auth->config('authenticate', [
  *        'Authenticate.Cookie' => [
  *            'fields' => [
@@ -29,7 +29,7 @@ use Cake\Routing\Router;
  *            ]
  *        ]
  *    ]);
- * }}}
+ * ```
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt

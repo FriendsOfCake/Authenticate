@@ -11,7 +11,7 @@ use Cake\ORM\TableRegistry;
  * Provides the ability to authenticate using POST data. The username form input
  * can be checked against multiple table columns, for instance username and email
  *
- * {{{
+ * ```
  *    $this->Auth->config('authenticate', [
  *        'Authenticate.MultiColumn' => [
  *            'fields' => [
@@ -23,7 +23,7 @@ use Cake\ORM\TableRegistry;
  *            'scope' => ['User.active' => 1]
  *        ]
  *    ]);
- * }}}
+ * ```
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt

@@ -13,7 +13,7 @@ use Cake\ORM\TableRegistry;
  *
  * Provides the ability to authenticate using Token
  *
- * {{{
+ * ```
  *    $this->Auth->config('authenticate', [
  *        'FOC/Authenticate.Token' => [
  *            'parameter' => '_token',
@@ -26,7 +26,7 @@ use Cake\ORM\TableRegistry;
  *             'continue' => true
  *        ]
  *    ]);
- * }}}
+ * ```
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
