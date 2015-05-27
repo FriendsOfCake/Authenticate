@@ -71,7 +71,7 @@ class TokenAuthenticate extends BaseAuthenticate
         $this->config($config);
 
         if (empty($this->_config['parameter']) &&
-        empty($this->_config['header'])
+            empty($this->_config['header'])
         ) {
             throw new Exception(__d(
                 'authenticate',
@@ -129,7 +129,7 @@ class TokenAuthenticate extends BaseAuthenticate
             }
         }
         if (!empty($this->_config['parameter']) &&
-        !empty($request->query[$this->_config['parameter']])
+            !empty($request->query[$this->_config['parameter']])
         ) {
             $token = $request->query[$this->_config['parameter']];
             return $this->_findUser($token);
