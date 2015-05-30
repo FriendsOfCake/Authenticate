@@ -4,6 +4,7 @@ namespace FOC\Authenticate\Auth;
 use Cake\Auth\BaseAuthenticate;
 use Cake\Controller\ComponentRegistry;
 use Cake\Controller\Component\CookieComponent;
+use Cake\Event\Event;
 use Cake\Network\Request;
 use Cake\Network\Response;
 use Cake\Routing\Router;
@@ -120,10 +121,11 @@ class CookieAuthenticate extends BaseAuthenticate
     /**
      * Called from AuthComponent::logout()
      *
+     * @param \Cake\Event\Event $event The dispatched Auth.logout event.
      * @param array $user User record.
      * @return void
      */
-    public function logout(array $user)
+    public function logout(Event $event, array $user)
     {
         $this->_registry->Cookie->delete($this->_config['cookie']['name']);
     }
