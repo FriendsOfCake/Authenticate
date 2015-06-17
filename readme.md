@@ -160,7 +160,7 @@ class UsersController extends AppController {
 		$data = [
 			'username' => $this->request->data('username'),
 			'password' => $this->request->data('password')
-		);
+		];
 		$this->Cookie->write('RememberMe', $data, true, '+1 week');
 		return true;
 	}
