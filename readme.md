@@ -1,6 +1,6 @@
 # Authenticate plugin
 
-[![Build Status](https://travis-ci.org/FriendsOfCake/Authenticate.png?branch=master)](https://travis-ci.org/FriendsOfCake/Authenticate)
+[![Build Status](https://travis-ci.org/FriendsOfCake/Authenticate.png?branch=cake3)](https://travis-ci.org/FriendsOfCake/Authenticate)
 [![Coverage Status](https://coveralls.io/repos/FriendsOfCake/Authenticate/badge.png)](https://coveralls.io/r/FriendsOfCake/Authenticate)
 
 Plugin containing some authenticate classes for AuthComponent.
@@ -11,43 +11,21 @@ Current classes:
 * CookieAuthenticate, login with a cookie
 * TokenAuthenticate, login with a token as url parameter or header
 
-GoogleAuthenticate is moved to separate repo: https://github.com/ceeram/GoogleAuthenticate
-
 ## Requirements
 
-* PHP 5.3
-* CakePHP 2.x
+* CakePHP 3.0
 
 ## Installation
 
 _[Composer]_
 
-run: `composer require friendsofcake/authenticate` or add `friendsofcake/authenticate` to `require` in your applications `composer.json`
-
-_[Manual]_
-
-* Download this: http://github.com/FriendsOfCake/Authenticate/zipball/master
-* Unzip that download.
-* Copy the resulting folder to app/Plugin
-* Rename the folder you just copied to Authenticate
-
-_[GIT Submodule]_
-
-In your app directory type:
-```
-git submodule add git://github.com/FriendsOfCake/Authenticate.git Plugin/Authenticate
-git submodule init
-git submodule update
-```
-
-_[GIT Clone]_
-
-In your plugin directory type
-`git clone git://github.com/FriendsOfCake/Authenticate.git Authenticate`
+run: `composer require friendsofcake/authenticate:dev-cake3` or
+add `"friendsofcake/authenticate":"dev-cake3"` to `require` section in your
+application's `composer.json`.
 
 ## Usage
 
-In `app/Config/bootstrap.php` add: `CakePlugin::load('Authenticate')`;
+In your app's `config/bootstrap.php` add: `Plugin::load('FOC/Authenticate');`
 
 ## Configuration:
 
@@ -57,64 +35,65 @@ Setup the authentication class settings
 
 ```php
     //in $components
-    public $components = array(
-        'Auth' => array(
-            'authenticate' => array(
-                'Authenticate.MultiColumn' => array(
-                    'fields' => array(
+    public $components = [
+        'Auth' => [
+            'authenticate' => [
+                'FOC/Authenticate.MultiColumn' => [
+                    'fields' => [
                         'username' => 'login',
                         'password' => 'password'
-                    ),
-                    'columns' => array('username', 'email'),
-                    'userModel' => 'User',
-                    'scope' => array('User.active' => 1)
-                )
-            )
-        )
-    );
-    //Or in beforeFilter()
-    $this->Auth->authenticate = array(
-        'Authenticate.MultiColumn' => array(
-            'fields' => array(
+                    ],
+                    'columns' => ['username', 'email'],
+                    'userModel' => 'Users',
+                    'scope' => ['Users.active' => 1]
+                ]
+            ]
+        ]
+    ];
+
+    // Or in beforeFilter()
+    $this->Auth->config('authenticate', [
+        'FOC/Authenticate.MultiColumn' => [
+            'fields' => [
                 'username' => 'login',
                 'password' => 'password'
-            ),
-            'columns' => array('username', 'email'),
-            'userModel' => 'User',
-            'scope' => array('User.active' => 1)
-        )
-    );
+            ],
+            'columns' => ['username', 'email'],
+            'userModel' => 'Users',
+            'scope' => ['Users.active' => 1]
+        ]
+    ]);
 ```
 
 ### CookieAuthenticate:
 
 ```php
     //in $components
-    public $components = array(
-        'Auth' => array(
-            'authenticate' => array(
-                'Authenticate.Cookie' => array(
-                    'fields' => array(
+    public $components = [
+        'Auth' => [
+            'authenticate' => [
+                'FOC/Authenticate.Cookie' => [
+                    'fields' => [
                         'username' => 'login',
                         'password' => 'password'
-                    ),
-                    'userModel' => 'SomePlugin.User',
-                    'scope' => array('User.active' => 1)
-                )
-            )
-        )
-    );
+                    ],
+                    'userModel' => 'SomePlugin.Users',
+                    'scope' => ['User.active' => 1]
+                ]
+            ]
+        ]
+    ];
     //Or in beforeFilter()
-    $this->Auth->authenticate = array(
-        'Authenticate.Cookie' => array(
-            'fields' => array(
+    $this->Auth->authenticate = [
+        'FOC/Authenticate.Cookie' => [
+            'fields' => [
                 'username' => 'login',
                 'password' => 'password'
-            ),
-            'userModel' => 'SomePlugin.User',
-            'scope' => array('User.active' => 1)
-        )
-    );
+            ],
+            'userModel' => 'SomePlugin.Users',
+            'scope' => ['Users.active' => 1]
+        ]
+    ];
 ```
 
 ### Setup both:
@@ -122,40 +101,29 @@ Setup the authentication class settings
 It will first try to read the cookie, if that fails will try with form data:
 ```php
     //in $components
-    public $components = array(
-        'Auth' => array(
-            'authenticate' => array(
-                'Authenticate.Cookie' => array(
-                    'fields' => array(
+    public $components = [
+        'Auth' => [
+            'authenticate' => [
+                'FOC/Authenticate.Cookie' => [
+                    'fields' => [
                         'username' => 'login',
                         'password' => 'password'
-                    ),
-                    'userModel' => 'SomePlugin.User',
-                    'scope' => array('User.active' => 1)
-                ),
-                'Authenticate.MultiColumn' => array(
-                    'fields' => array(
+                    ],
+                    'userModel' => 'SomePlugin.Users',
+                    'scope' => ['User.active' => 1]
+                ],
+                'FOC/Authenticate.MultiColumn' => [
+                    'fields' => [
                         'username' => 'login',
                         'password' => 'password'
-                    ),
-                    'columns' => array('username', 'email'),
-                    'userModel' => 'User',
-                    'scope' => array('User.active' => 1)
-                )
-            )
-        )
-    );
-```
-
-### Security
-
-For enhanced security, make sure you add this code to your `AppController::beforeFilter()` if you intend to use Cookie
-authentication:
-
-```php
-public function beforeFilter() {
-  $this->Cookie->type('rijndael'); //Enable AES symetric encryption of cookie
-}
+                    ],
+                    'columns' => ['username', 'email'],
+                    'userModel' => 'Users',
+                    'scope' => ['Users.active' => 1]
+                ]
+            ]
+        ]
+    ];
 ```
 
 ### Setting the cookie
@@ -171,36 +139,32 @@ App::uses('AppController', 'Controller');
  */
 class UsersController extends AppController {
 
-	public $components = array('Cookie');
+	public $components = ['Cookie'];
 
-	public function beforeFilter() {
-		$this->Cookie->type('rijndael');
-	}
-
-	public function login() {
-		if ($this->Auth->loggedIn() || $this->Auth->login()) {
-			$this->_setCookie();
-			$this->redirect($this->Auth->redirect());
-		}
-	}
+    public function login() {
+        if ($this->request->is('post')) {
+            $user = $this->Auth->identify();
+            if ($user) {
+                $this->Auth->setUser($user);
+                $this->_setCookie();
+                return $this->redirect($this->Auth->redirectUrl());
+            }
+            $this->Flash->error(__('Invalid username or password, try again'));
+        }
+    }
 
 	protected function _setCookie() {
-		if (!$this->request->data('User.remember_me')) {
+		if (!$this->request->data('remember_me')) {
 			return false;
 		}
-		$data = array(
-			'username' => $this->request->data('User.username'),
-			'password' => $this->request->data('User.password')
-		);
-		$this->Cookie->write('User', $data, true, '+1 week');
+		$data = [
+			'username' => $this->request->data('username'),
+			'password' => $this->request->data('password')
+		];
+		$this->Cookie->write('RememberMe', $data, true, '+1 week');
 		return true;
 	}
 
-	public function logout() {
-		$this->Auth->logout();
-		$this->Session->setFlash('Logged out');
-		$this->redirect($this->Auth->redirect('/'));
-	}
 }
 ```
 
@@ -208,37 +172,37 @@ class UsersController extends AppController {
 
 ```php
     //in $components
-    public $components = array(
-        'Auth' => array(
-            'authenticate' => array(
-                'Authenticate.Token' => array(
+    public $components = [
+        'Auth' => [
+            'authenticate' => [
+                'FOC/Authenticate.Token' => [
                     'parameter' => '_token',
                     'header' => 'X-MyApiTokenHeader',
-                    'userModel' => 'User',
-                    'scope' => array('User.active' => 1),
-                    'fields' => array(
+                    'userModel' => 'Users',
+                    'scope' => ['Users.active' => 1],
+                    'fields' => [
                         'username' => 'username',
                         'password' => 'password',
                         'token' => 'public_key',
-                    ),
+                    ],
                     'continue' => true
-                )
-            )
-        )
-    );
+                ]
+            ]
+        ]
+    ];
     //Or in beforeFilter()
-    $this->Auth->authenticate = array(
-        'Authenticate.Token' => array(
+    $this->Auth->config('authenticate', [
+        'FOC/Authenticate.Token' => [
             'parameter' => '_token',
             'header' => 'X-MyApiTokenHeader',
-            'userModel' => 'User',
-            'scope' => array('User.active' => 1),
-            'fields' => array(
+            'userModel' => 'Users',
+            'scope' => ['Users.active' => 1],
+            'fields' => [
                 'username' => 'username',
                 'password' => 'password',
                 'token' => 'public_key',
-            ),
+            ],
             'continue' => true
-        )
-    );
+        ]
+    ]);
 ```
