@@ -3,6 +3,13 @@
 [![Build Status](https://travis-ci.org/FriendsOfCake/Authenticate.png?branch=cake3)](https://travis-ci.org/FriendsOfCake/Authenticate)
 [![Coverage Status](https://coveralls.io/repos/FriendsOfCake/Authenticate/badge.png)](https://coveralls.io/r/FriendsOfCake/Authenticate)
 
+# NOTE: This project is no longer maintained actively.
+
+The Authenticate classes have become redundant or better alternatives have surfaced:
+* MultiColumnAuthenticate, this can now be achieved with custom finders in CakePHP 3
+* CookieAuthenticate, see [Xety/Cake3-CookieAuth](https://github.com/Xety/Cake3-CookieAuth)
+* TokenAuthenticate, see [JwtAuth](https://github.com/ADmad/cakephp-jwt-auth)
+
 Plugin containing some authenticate classes for AuthComponent.
 
 Current classes:
