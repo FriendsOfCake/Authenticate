@@ -6,7 +6,7 @@
 # NOTE: This project is no longer maintained actively.
 
 The Authenticate classes have become redundant or better alternatives have surfaced:
-* MultiColumnAuthenticate, this can now be achieved with custom finders in CakePHP 3
+* MultiColumnAuthenticate, see [Tools](https://github.com/dereuromark/cakephp-tools) - or use custom finders in CakePHP 3
 * CookieAuthenticate, see [Xety/Cake3-CookieAuth](https://github.com/Xety/Cake3-CookieAuth)
 * TokenAuthenticate, see [JwtAuth](https://github.com/ADmad/cakephp-jwt-auth)
 
